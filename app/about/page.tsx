@@ -10,8 +10,7 @@ const body    = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"]
    ANIMATION HOOKS  ← copy to every page
 ═══════════════════════════════════════════════════════════ */
 
-function useReveal(threshold = 0.12): [React.RefObject<HTMLDivElement>, boolean] {
-  const ref = useRef<HTMLDivElement | null>(null)
+function useReveal(threshold = 0.2): [React.RefObject<HTMLDivElement | null>, boolean] {
   const [visible, setVisible] = useState(false)
   useEffect(() => {
     const el = ref.current; if (!el) return
