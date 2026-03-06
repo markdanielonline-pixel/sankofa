@@ -10,7 +10,7 @@ const body    = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"]
    ANIMATION HOOKS
 ═══════════════════════════════════════════════════════════ */
 
-return [ref, visible] as const(threshold = 0.2): [React.RefObject<HTMLDivElement | null>, boolean] {
+function useReveal(threshold = 0.2): [React.RefObject<HTMLDivElement | null>, boolean] {
   const ref = useRef<HTMLDivElement>(null!)
   const [visible, setVisible] = useState(false)
 
