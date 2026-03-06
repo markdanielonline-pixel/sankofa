@@ -22,7 +22,7 @@ function useReveal(threshold = 0.12): [React.RefObject<HTMLDivElement>, boolean]
     obs.observe(el)
     return () => obs.disconnect()
   }, [threshold])
-  return [ref, visible]
+return [ref, visible] as const
 }
 
 function useFloat(amplitude = 9, hz = 0.38): number {
