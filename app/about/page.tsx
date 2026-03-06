@@ -10,7 +10,7 @@ const body    = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"]
    ANIMATION HOOKS
 ═══════════════════════════════════════════════════════════ */
 
-function useReveal(threshold = 0.2): [React.RefObject<HTMLDivElement>, boolean] {
+return [ref, visible] as const(threshold = 0.2): [React.RefObject<HTMLDivElement>, boolean] {
   const ref = useRef<HTMLDivElement>(null!)
   const [visible, setVisible] = useState(false)
 
@@ -33,7 +33,7 @@ function useReveal(threshold = 0.2): [React.RefObject<HTMLDivElement>, boolean] 
     return () => obs.disconnect()
   }, [threshold])
 
-  return [ref, visible]
+  return [ref, visible] as const
 }
 
 function useFloat(amplitude = 9, hz = 0.38): number {
