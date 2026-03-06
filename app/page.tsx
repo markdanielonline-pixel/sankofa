@@ -246,7 +246,7 @@ export default function HomePage() {
           </p>
 
           <div className="btnRow">
-            <a className="btn btnPrimary" href="/submit">Submit Your Manuscript</a>
+            <a className="btn btnPrimary" href="/submissions">Submit Your Manuscript</a>
             <a className="btn btnGhost" href="/model">Learn About Our Model</a>
           </div>
 
@@ -506,7 +506,7 @@ export default function HomePage() {
             If your manuscript is prepared, disciplined, and aligned with intellectual responsibility — we invite you to submit. Up to 45 days structured review. Professional communication. Clear decisions.
           </p>
 
-          <a className="btn btnPrimary" href="/submit" style={{ fontSize: 16, padding: "17px 36px" }}>
+          <a className="btn btnPrimary" href="/submissions" style={{ fontSize: 16, padding: "17px 36px" }}>
             Submit Your Manuscript
           </a>
         </div>

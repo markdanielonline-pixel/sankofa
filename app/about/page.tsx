@@ -594,7 +594,7 @@ export default function AboutPage() {
               If your manuscript is prepared, disciplined, and aligned with intellectual responsibility — we invite you to submit.
             </p>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
-              <a className="btn btnP" href="/submit">Submit Your Manuscript</a>
+              <a className="btn btnP" href="/submissions">Submit Your Manuscript</a>
               <a className="btn btnG" href="/model">Learn About Our Model</a>
             </div>
           </Reveal>

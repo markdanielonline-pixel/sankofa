@@ -581,8 +581,8 @@ export default function SubmissionsPage() {
               Select your path and begin. Up to 45 days structured review. Clear decisions. Professional communication.
             </p>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
-              <a className="btn btnP" href="/submit/path-a">Submit Publication Ready Manuscript</a>
-              <a className="btn btnG" href="/submit/path-b">Request Services Consultation</a>
+              <a className="btn btnP" href="/submissions">Submit Publication Ready Manuscript</a>
+              <a className="btn btnG" href="/submissions">Request Services Consultation</a>
             </div>
           </Reveal>
         </div>

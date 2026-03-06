@@ -530,7 +530,7 @@ export default function ModelPage() {
                   </p>
                 </div>
                 <div style={{ marginTop:20 }}>
-                  <a className="btn btnP" href="/submit" style={{ width:"100%", justifyContent:"center" }}>
+                  <a className="btn btnP" href="/submissions" style={{ width:"100%", justifyContent:"center" }}>
                     Submit &amp; Add PRA
                   </a>
                 </div>
@@ -611,7 +611,7 @@ export default function ModelPage() {
               If your manuscript is prepared, disciplined, and publication ready — we invite you to submit at no cost.
             </p>
             <div style={{ display:"flex", gap:12, flexWrap:"wrap" }}>
-              <a className="btn btnP" href="/submit">Submit Your Manuscript</a>
+              <a className="btn btnP" href="/submissions">Submit Your Manuscript</a>
               <a className="btn btnG" href="/services">View Our Services</a>
             </div>
           </Reveal>
