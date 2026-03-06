@@ -164,7 +164,7 @@ function ContributeSelector() {
               key={p}
               onClick={() => { setAmount(p); setCustom("") }}
               style={{
-                padding: "10px 20px", borderRadius: 10, border: "none",
+                padding: "10px 20px", borderRadius: 10,
                 cursor: "pointer", fontSize: 14, fontWeight: 600,
                 fontFamily: body.style.fontFamily,
                 background: amount === p && !custom ? "rgba(201,162,39,.12)" : "#fff",
