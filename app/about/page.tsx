@@ -7,35 +7,51 @@ const display = Fraunces({ subsets: ["latin"], weight: ["300", "400", "600"] })
 const body    = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] })
 
 /* ═══════════════════════════════════════════════════════════
-   ANIMATION HOOKS  ← copy to every page
+   ANIMATION HOOKS
 ═══════════════════════════════════════════════════════════ */
 
-function useReveal(threshold = 0.2): [React.RefObject<HTMLDivElement | null>, boolean] {
+function useReveal(threshold = 0.2): [React.RefObject<HTMLDivElement>, boolean] {
+  const ref = useRef<HTMLDivElement>(null!)
   const [visible, setVisible] = useState(false)
+
   useEffect(() => {
-    const el = ref.current; if (!el) return
+    const el = ref.current
+    if (!el) return
+
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect() } },
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true)
+          obs.disconnect()
+        }
+      },
       { threshold }
     )
+
     obs.observe(el)
+
     return () => obs.disconnect()
   }, [threshold])
+
   return [ref, visible]
 }
 
 function useFloat(amplitude = 9, hz = 0.38): number {
   const [y, setY] = useState(0)
+
   useEffect(() => {
     let raf: number
     const t0 = performance.now()
+
     const tick = (now: number) => {
       setY(Math.sin(((now - t0) / 1000) * hz * Math.PI * 2) * amplitude)
       raf = requestAnimationFrame(tick)
     }
+
     raf = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(raf)
   }, [amplitude, hz])
+
   return y
 }
 
