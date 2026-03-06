@@ -1,35 +1,138 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  background: #0b0b0b;
-  color: white;
-  font-family: Georgia, "Times New Roman", serif;
+/* app/globals.css */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #fff;
+  color: #0b0b0c;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
 }
 
 button {
-  font-family: inherit;
+  cursor: pointer;
 }
 
-.gold {
-  color: #d4af37;
+a {
+  text-decoration: none;
+  color: inherit;
 }
 
-.section-dark {
-  background: #0b0b0b;
+a:hover {
+  text-decoration: none;
 }
 
-.section-light {
-  background: #f5f3ef;
-  color: #111;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
 }
 
-.container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 60px 20px;
+p {
+  margin: 0 0 0.9rem;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style: none;
+}
+
+::selection {
+  background: rgba(201, 162, 39, 0.25);
+}
+
+:root {
+  --ink: #0b0b0c;
+  --paper: #f6f3ee;
+  --gold: #c9a227;
+
+  --line: rgba(11, 11, 12, 0.1);
+  --muted: rgba(11, 11, 12, 0.72);
+
+  --radius-xl: 22px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.08);
+  --shadow-hero: 0 22px 60px rgba(0, 0, 0, 0.18);
+
+  --container: 1120px;
+  --gutter: 20px;
+}
+
+.pagecontainer {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+:focus-visible {
+  outline: 2px solid rgba(201, 162, 39, 0.7);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.04);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.18);
+    border-radius: 999px;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.26);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

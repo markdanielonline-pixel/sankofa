@@ -4,7 +4,21 @@ import Footer from "./components/Footer"
 
 export const metadata = {
   title: "Sankofa Publishers",
-  description: "Legacy Restored. Narrative Rewritten."
+  description: "Legacies Restored. Narratives Rewritten.",
+  openGraph: {
+    title: "Sankofa Publishers",
+    description: "Legacies Restored. Narratives Rewritten.",
+    url: "https://sankofapublishers.com",
+    siteName: "Sankofa Publishers",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sankofa Publishers",
+    description: "Legacies Restored. Narratives Rewritten.",
+  },
+  metadataBase: new URL("https://sankofapublishers.com"),
 }
 
 export default function RootLayout({
@@ -15,13 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-
         <Header />
-
-        {children}
-
+        <main style={{ paddingTop: "72px" }}>
+          {children}
+        </main>
         <Footer />
-
       </body>
     </html>
   )
