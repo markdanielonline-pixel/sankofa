@@ -11,7 +11,7 @@ const body    = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"]
 ═══════════════════════════════════════════════════════════ */
 
 function useReveal(threshold = 0.12): [React.RefObject<HTMLDivElement>, boolean] {
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement | null>(null)
   const [visible, setVisible] = useState(false)
   useEffect(() => {
     const el = ref.current; if (!el) return
