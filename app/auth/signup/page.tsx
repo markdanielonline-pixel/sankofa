@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { Fraunces, Inter } from "next/font/google"
 import { supabase } from "@/lib/supabase"
@@ -10,12 +10,6 @@ const body = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] })
 
 export default function SignupPage() {
   const router = useRouter()
-  const [fullName, setFullName] = useState("")
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState(false)
-  const [loading, setLoading] = useState(false)
   const [googleLoading, setGoogleLoading] = useState(false)
 
   useEffect(() => {
@@ -31,24 +25,6 @@ export default function SignupPage() {
       options: { redirectTo: `${window.location.origin}/portal` },
     })
     setGoogleLoading(false)
-  }
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    setError("")
-    setLoading(true)
-    const { error: err } = await supabase.auth.signUp({
-      email,
-      password,
-      options: { data: { full_name: fullName } },
-    })
-    if (err) {
-      setError(err.message)
-      setLoading(false)
-    } else {
-      setSuccess(true)
-      setLoading(false)
-    }
   }
 
   return (
@@ -91,71 +67,6 @@ export default function SignupPage() {
           margin: 0 0 36px;
           line-height: 1.1;
         }
-        .auth-label {
-          display: block;
-          font-size: 12px;
-          letter-spacing: .08em;
-          text-transform: uppercase;
-          color: rgba(246,243,238,.5);
-          margin-bottom: 8px;
-        }
-        .auth-input {
-          display: block;
-          width: 100%;
-          box-sizing: border-box;
-          background: rgba(255,255,255,.06);
-          border: 1px solid rgba(201,162,39,.3);
-          border-radius: 10px;
-          padding: 14px 16px;
-          font-size: 15px;
-          color: #f6f3ee;
-          font-family: inherit;
-          outline: none;
-          transition: border-color .2s;
-          margin-bottom: 22px;
-        }
-        .auth-input:focus {
-          border-color: #C9A227;
-        }
-        .auth-input::placeholder {
-          color: rgba(246,243,238,.25);
-        }
-        .auth-btn {
-          display: block;
-          width: 100%;
-          padding: 15px;
-          background: #C9A227;
-          color: #140F05;
-          border: none;
-          border-radius: 999px;
-          font-size: 15px;
-          font-weight: 600;
-          font-family: inherit;
-          cursor: pointer;
-          transition: opacity .2s;
-          margin-top: 8px;
-        }
-        .auth-btn:hover { opacity: .88; }
-        .auth-btn:disabled { opacity: .5; cursor: default; }
-        .auth-error {
-          background: rgba(220, 60, 60, .12);
-          border: 1px solid rgba(220, 60, 60, .35);
-          border-radius: 10px;
-          padding: 12px 16px;
-          font-size: 14px;
-          color: #f87171;
-          margin-bottom: 20px;
-        }
-        .auth-success {
-          background: rgba(39, 162, 100, .12);
-          border: 1px solid rgba(39, 162, 100, .35);
-          border-radius: 10px;
-          padding: 16px 20px;
-          font-size: 15px;
-          color: #6ee7b7;
-          line-height: 1.6;
-          text-align: center;
-        }
         .auth-footer {
           text-align: center;
           margin-top: 28px;
@@ -184,30 +95,12 @@ export default function SignupPage() {
           font-family: inherit;
           cursor: pointer;
           transition: background .2s, border-color .2s;
-          margin-bottom: 24px;
         }
         .google-btn:hover {
           background: rgba(201,162,39,.07);
           border-color: #C9A227;
         }
         .google-btn:disabled { opacity: .5; cursor: default; }
-        .auth-divider {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-          margin-bottom: 24px;
-          color: rgba(246,243,238,.25);
-          font-size: 12px;
-          letter-spacing: .06em;
-          text-transform: uppercase;
-        }
-        .auth-divider::before,
-        .auth-divider::after {
-          content: "";
-          flex: 1;
-          height: 1px;
-          background: rgba(255,255,255,.08);
-        }
       ` }} />
 
       <div className="auth-page">
@@ -224,60 +117,6 @@ export default function SignupPage() {
             </svg>
             {googleLoading ? "Redirecting…" : "Continue with Google"}
           </button>
-
-          <div className="auth-divider">or</div>
-
-          {success ? (
-            <div className="auth-success">
-              Check your email to confirm your account. Once verified, you can{" "}
-              <a href="/auth/login" style={{ color: "#C9A227" }}>sign in here</a>.
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit}>
-              <label className="auth-label" htmlFor="fullName">Full Name</label>
-              <input
-                id="fullName"
-                className="auth-input"
-                type="text"
-                placeholder="Your name"
-                value={fullName}
-                onChange={e => setFullName(e.target.value)}
-                required
-                autoComplete="name"
-              />
-
-              <label className="auth-label" htmlFor="email">Email</label>
-              <input
-                id="email"
-                className="auth-input"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                required
-                autoComplete="email"
-              />
-
-              <label className="auth-label" htmlFor="password">Password</label>
-              <input
-                id="password"
-                className="auth-input"
-                type="password"
-                placeholder="••••••••"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-                minLength={6}
-                autoComplete="new-password"
-              />
-
-              {error && <div className="auth-error">{error}</div>}
-
-              <button className="auth-btn" type="submit" disabled={loading}>
-                {loading ? "Creating account…" : "Create Account"}
-              </button>
-            </form>
-          )}
 
           <p className="auth-footer">
             Already have an account?{" "}
