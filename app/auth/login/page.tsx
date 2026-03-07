@@ -22,7 +22,7 @@ export default function LoginPage() {
     setGoogleLoading(true)
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/portal` },
+      options: { redirectTo: "https://www.sankofapublishers.com/portal" },
     })
     setGoogleLoading(false)
   }
