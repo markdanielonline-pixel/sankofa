@@ -248,7 +248,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       const { data: profile } = await supabase
         .from("profiles")
-        .select("role, full_name, email")
+        .select("role, full_name")
         .eq("id", authData.user.id)
         .single()
 
@@ -260,7 +260,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
       setUser({
         id:    authData.user.id,
-        email: profile?.email ?? authData.user.email ?? "",
+        email: authData.user.email ?? "",
         name:  profile?.full_name ?? authData.user.email?.split("@")[0] ?? "Admin",
         role,
       })
