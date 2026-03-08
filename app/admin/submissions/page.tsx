@@ -320,7 +320,6 @@ function NotesEditor({
   const [val,     setVal]     = useState(currentNotes)
   const [saving,  setSaving]  = useState(false)
   const [editing, setEditing] = useState(false)
-  const body = Inter({ subsets: ["latin"], weight: ["400", "500"] })
 
   if (!editing) {
     return (
