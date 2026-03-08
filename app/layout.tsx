@@ -1,6 +1,6 @@
 import "./globals.css"
 import Header from "./components/Header"
-import Footer from "./components/Footer"
+import ConditionalFooter from "./components/ConditionalFooter"
 
 export const metadata = {
   title: "Sankofa Publishers",
@@ -33,7 +33,7 @@ export default function RootLayout({
         <main style={{ paddingTop: "72px" }}>
           {children}
         </main>
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   )
