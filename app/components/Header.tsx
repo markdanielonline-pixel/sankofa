@@ -174,6 +174,23 @@ const css = `
   }
   .spNavItem.open .spChevron { transform: rotate(180deg); opacity: 1; }
 
+  /* ── AUTHOR LOGIN pill ── */
+  .spLoginBtn {
+    margin-left: 4px;
+    padding: 9px 18px !important;
+    background: transparent !important;
+    border: 1px solid rgba(255,255,255,.18) !important;
+    border-radius: 999px !important;
+    color: rgba(255,255,255,.72) !important;
+    font-weight: 500 !important;
+    transition: background .2s, border-color .2s, color .2s !important;
+  }
+  .spLoginBtn:hover {
+    background: rgba(255,255,255,.08) !important;
+    border-color: rgba(255,255,255,.38) !important;
+    color: white !important;
+  }
+
   /* ── SUPPORT special pill ── */
   .spSupportBtn {
     margin-left: 8px;
@@ -543,6 +560,13 @@ export default function Header() {
                 )
               })}
 
+              {/* Author Login */}
+              <li>
+                <Link href="/auth/login" className="spNavTrigger spLoginBtn">
+                  Author Login
+                </Link>
+              </li>
+
               {/* Submit CTA */}
               <li>
                 <Link href="/submissions" className="spCta">
@@ -658,6 +682,9 @@ export default function Header() {
         <div className="spDrawerCtas">
           <Link href="/submissions" className="spDrawerCtaP" onClick={() => setMobileOpen(false)}>
             Submit Your Manuscript
+          </Link>
+          <Link href="/auth/login" className="spDrawerCtaG" onClick={() => setMobileOpen(false)}>
+            Author Login
           </Link>
           <Link href="/model" className="spDrawerCtaG" onClick={() => setMobileOpen(false)}>
             Learn About Our Model
