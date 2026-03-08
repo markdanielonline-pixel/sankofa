@@ -194,6 +194,10 @@ function ServiceCard({ kicker, title, price, description, includes, note }: {
               {note}
             </div>
           )}
+          <div style={{ marginTop: 16, paddingTop: 14, borderTop: "1px solid var(--line)", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
+            <span style={{ fontSize: 13, color: "rgba(11,11,12,.45)" }}>Ready to get started?</span>
+            <a href="/auth/signup" style={{ fontSize: 13, fontWeight: 600, color: "#C9A227", textDecoration: "none", letterSpacing: ".01em" }}>Create your author account →</a>
+          </div>
         </div>
       </div>
     </div>

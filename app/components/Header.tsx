@@ -210,6 +210,24 @@ const css = `
     box-shadow: 0 6px 20px rgba(201,162,39,.22);
   }
 
+  /* ── JOIN AS AUTHOR secondary pill ── */
+  .spJoinBtn {
+    margin-left: 4px;
+    padding: 9px 18px !important;
+    background: rgba(201,162,39,.10) !important;
+    border: 1px solid rgba(201,162,39,.35) !important;
+    border-radius: 999px !important;
+    color: #C9A227 !important;
+    font-weight: 600 !important;
+    transition: background .2s, border-color .2s, color .2s !important;
+    white-space: nowrap;
+  }
+  .spJoinBtn:hover {
+    background: rgba(201,162,39,.20) !important;
+    border-color: rgba(201,162,39,.65) !important;
+    color: #f5d878 !important;
+  }
+
   /* ── SUBMIT CTA ── */
   .spCta {
     margin-left: 6px;
@@ -414,7 +432,7 @@ const css = `
      RESPONSIVE
   ══════════════════════════════════════════ */
   @media(max-width:960px) {
-    .spNav, .spCta { display:none !important; }
+    .spNav, .spCta, .spJoinBtn { display:none !important; }
     .spBurger { display:flex; }
   }
   @media(min-width:961px) {
@@ -567,6 +585,13 @@ export default function Header() {
                 </Link>
               </li>
 
+              {/* Join as Author */}
+              <li>
+                <Link href="/auth/signup" className="spNavTrigger spJoinBtn">
+                  Join as Author
+                </Link>
+              </li>
+
               {/* Submit CTA */}
               <li>
                 <Link href="/submissions" className="spCta">
@@ -682,6 +707,9 @@ export default function Header() {
         <div className="spDrawerCtas">
           <Link href="/submissions" className="spDrawerCtaP" onClick={() => setMobileOpen(false)}>
             Submit Your Manuscript
+          </Link>
+          <Link href="/auth/signup" className="spDrawerCtaG" onClick={() => setMobileOpen(false)}>
+            Join as Author
           </Link>
           <Link href="/auth/login" className="spDrawerCtaG" onClick={() => setMobileOpen(false)}>
             Author Login

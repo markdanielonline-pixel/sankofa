@@ -580,12 +580,82 @@ const css = `
     margin: 0;
   }
 
+  /* ══════════ AUTHOR PROFILE FORM ══════════ */
+  .pt-profile-wrap {
+    display: grid;
+    grid-template-columns: 148px 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+  .pt-avatar-area {
+    display: flex; flex-direction: column;
+    align-items: center; gap: 10px;
+  }
+  .pt-avatar {
+    width: 112px; height: 112px; border-radius: 50%;
+    background: rgba(201,162,39,.10);
+    border: 2px solid rgba(201,162,39,.28);
+    overflow: hidden; position: relative;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .pt-avatar img { width:100%; height:100%; object-fit:cover; }
+  .pt-avatar-init {
+    font-size: 34px; font-weight: 600; color: #C9A227; line-height: 1;
+  }
+  .pt-avatar-spinner {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,.6);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: rgba(255,255,255,.6);
+  }
+  .pt-avatar-upload-label {
+    font-size: 11px; font-weight: 600; letter-spacing: .08em;
+    text-transform: uppercase; color: rgba(201,162,39,.7);
+    cursor: pointer; transition: color .2s; padding: 0; background: none; border: none;
+    font-family: inherit;
+  }
+  .pt-avatar-upload-label:hover { color: #C9A227; }
+
+  .pt-field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+  .pt-field-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .18em;
+    text-transform: uppercase; color: rgba(255,255,255,.35);
+  }
+  .pt-input, .pt-textarea {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 10px; padding: 10px 14px;
+    font-size: 14px; color: rgba(255,255,255,.82);
+    font-family: inherit; width: 100%; outline: none;
+    transition: border-color .2s, background .2s;
+  }
+  .pt-textarea { resize: vertical; min-height: 88px; }
+  .pt-input:focus, .pt-textarea:focus {
+    border-color: rgba(201,162,39,.45);
+    background: rgba(255,255,255,.07);
+  }
+  .pt-social-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .pt-field-hint { font-size: 11px; color: rgba(255,255,255,.22); }
+
+  /* profile toast */
+  .pt-msg {
+    position: fixed; bottom: 24px; right: 24px; z-index: 9999;
+    padding: 12px 18px; border-radius: 12px;
+    background: rgba(201,162,39,.12); border: 1px solid rgba(201,162,39,.28);
+    font-size: 13px; color: rgba(255,255,255,.82);
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 8px 28px rgba(0,0,0,.3);
+  }
+
   /* ══════════ RESPONSIVE ══════════ */
   @media (max-width: 900px) {
     .pt-pc { padding: 0 20px; }
     .pt-dash-grid   { grid-template-columns: 1fr 1fr !important; }
     .pt-dash-grid-2 { grid-template-columns: 1fr !important; }
     .pt-services-grid { grid-template-columns: repeat(2, 1fr) !important; }
+    .pt-profile-wrap { grid-template-columns: 1fr !important; }
+    .pt-social-row   { grid-template-columns: 1fr !important; }
   }
   @media (max-width: 580px) {
     .pt-dash-grid { grid-template-columns: 1fr !important; }
@@ -618,13 +688,45 @@ export default function PortalPage() {
   const [file, setFile] = useState<File | null>(null)
   const [dragOver, setDragOver] = useState(false)
 
+  /* author profile */
+  const [authorId,       setAuthorId]       = useState<string | null>(null)
+  const [authorSlug,     setAuthorSlug]     = useState<string | null>(null)
+  const [bio,            setBio]            = useState("")
+  const [tagline,        setTagline]        = useState("")
+  const [photoUrl,       setPhotoUrl]       = useState("")
+  const [socialLinks,    setSocialLinks]    = useState({ twitter: "", instagram: "", linkedin: "", website: "" })
+  const [profileSaving,  setProfileSaving]  = useState(false)
+  const [photoUploading, setPhotoUploading] = useState(false)
+  const [profileMsg,     setProfileMsg]     = useState<string | null>(null)
+
   /* auth guard */
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(async ({ data }) => {
       if (!data.user) { router.push("/auth/login"); return }
       setEmail(data.user.email ?? null)
       const n = data.user.user_metadata?.full_name
       if (n) setName(n.split(" ")[0])
+
+      /* load author profile */
+      const { data: ap } = await supabase
+        .from("authors")
+        .select("id, slug, bio, tagline, photo_url, social_links")
+        .eq("user_id", data.user.id)
+        .maybeSingle()
+      if (ap) {
+        setAuthorId(ap.id)
+        setAuthorSlug(ap.slug ?? null)
+        setBio(ap.bio ?? "")
+        setTagline(ap.tagline ?? "")
+        setPhotoUrl(ap.photo_url ?? "")
+        setSocialLinks({
+          twitter:   ap.social_links?.twitter   ?? "",
+          instagram: ap.social_links?.instagram ?? "",
+          linkedin:  ap.social_links?.linkedin  ?? "",
+          website:   ap.social_links?.website   ?? "",
+        })
+      }
+
       setLoading(false)
     })
   }, [router])
@@ -650,6 +752,64 @@ export default function PortalPage() {
     window.addEventListener("scroll", fn, { passive: true })
     return () => window.removeEventListener("scroll", fn)
   }, [])
+
+  /* ── Profile handlers ── */
+  const showProfileMsg = (msg: string) => {
+    setProfileMsg(msg)
+    setTimeout(() => setProfileMsg(null), 3000)
+  }
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0]
+    if (!f) return
+    setPhotoUploading(true)
+    const { data: authData } = await supabase.auth.getUser()
+    const userId = authData.user?.id
+    if (!userId) { setPhotoUploading(false); return }
+    const ext  = f.name.split(".").pop() ?? "jpg"
+    const path = `${userId}/photo.${ext}`
+    const { data: up, error } = await supabase.storage
+      .from("author-photos")
+      .upload(path, f, { upsert: true })
+    if (!error && up) {
+      const { data: urlData } = supabase.storage.from("author-photos").getPublicUrl(up.path)
+      setPhotoUrl(urlData.publicUrl)
+    } else {
+      showProfileMsg(error?.message ?? "Upload failed")
+    }
+    setPhotoUploading(false)
+  }
+
+  const saveAuthorProfile = async () => {
+    const { data: authData } = await supabase.auth.getUser()
+    const userId = authData.user?.id
+    if (!userId) return
+    setProfileSaving(true)
+    const payload = {
+      bio:          bio.slice(0, 500),
+      tagline:      tagline.slice(0, 100),
+      photo_url:    photoUrl || null,
+      social_links: socialLinks,
+      updated_at:   new Date().toISOString(),
+    }
+    if (authorId) {
+      const { error } = await supabase.from("authors").update(payload).eq("id", authorId)
+      if (error) { showProfileMsg(error.message); setProfileSaving(false); return }
+    } else {
+      const { data: authUser } = await supabase.auth.getUser()
+      const displayName = authUser.user?.user_metadata?.full_name ?? authUser.user?.email?.split("@")[0] ?? "Author"
+      const { data: newA, error } = await supabase
+        .from("authors")
+        .insert({ user_id: userId, name: displayName, ...payload })
+        .select("id, slug")
+        .single()
+      if (error) { showProfileMsg(error.message); setProfileSaving(false); return }
+      if (newA) { setAuthorId(newA.id); setAuthorSlug(newA.slug ?? null) }
+    }
+    toggleCheck("profile")
+    showProfileMsg("Profile saved!")
+    setProfileSaving(false)
+  }
 
   const handleLogout = async () => {
     await supabase.auth.signOut()
@@ -986,6 +1146,155 @@ export default function PortalPage() {
           </Reveal>
         </div>
       </section>
+
+      <div className="pt-div" style={{ margin: "48px 0 0" }} />
+
+      {/* ══════════════════════════════════════════
+          AUTHOR PROFILE
+      ══════════════════════════════════════════ */}
+      <section className="pt-sec" id="profile">
+        <div className="pt-pc">
+          <Reveal>
+            <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", marginBottom: 24, gap: 16, flexWrap: "wrap" }}>
+              <div>
+                <span className="pt-kicker">Author Profile</span>
+                <h2 className={`${display.className} pt-sec-title`} style={{ marginBottom: 0 }}>
+                  Your Public Minisite
+                </h2>
+              </div>
+              {authorId && authorSlug && (
+                <a
+                  href={`/authors/${authorSlug}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="pt-btn-ghost"
+                  style={{ fontSize: 12 }}
+                >
+                  View Live Minisite →
+                </a>
+              )}
+            </div>
+            {!authorId && (
+              <p style={{ fontSize: 13, color: "rgba(255,255,255,.35)", margin: "0 0 20px", lineHeight: 1.6 }}>
+                Fill out your profile below and save — an admin will assign your slug and publish your minisite once reviewed.
+              </p>
+            )}
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <div className="pt-card" style={{ padding: "28px 30px" }}>
+              <div className="pt-profile-wrap">
+
+                {/* ── Avatar ── */}
+                <div className="pt-avatar-area">
+                  <div className="pt-avatar">
+                    {photoUrl ? (
+                      <img src={photoUrl} alt={name} />
+                    ) : (
+                      <span className={`${display.className} pt-avatar-init`}>
+                        {name.slice(0, 2).toUpperCase()}
+                      </span>
+                    )}
+                    {photoUploading && (
+                      <div className="pt-avatar-spinner">Uploading…</div>
+                    )}
+                  </div>
+                  <label>
+                    <span className="pt-avatar-upload-label">Upload Photo</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      style={{ display: "none" }}
+                      onChange={handlePhotoUpload}
+                    />
+                  </label>
+                  <p style={{ fontSize: 10, color: "rgba(255,255,255,.2)", textAlign: "center", margin: 0, lineHeight: 1.5 }}>
+                    JPG, PNG, WebP<br />400×400 recommended
+                  </p>
+                </div>
+
+                {/* ── Fields ── */}
+                <div>
+                  <div className="pt-field">
+                    <span className="pt-field-label">
+                      Tagline&nbsp;
+                      <span style={{ color: "rgba(255,255,255,.2)", fontWeight: 400, textTransform: "none", letterSpacing: 0 }}>({tagline.length}/100)</span>
+                    </span>
+                    <input
+                      className="pt-input"
+                      placeholder="A short, powerful line about your work"
+                      value={tagline}
+                      maxLength={100}
+                      onChange={e => setTagline(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="pt-field">
+                    <span className="pt-field-label">
+                      Bio&nbsp;
+                      <span style={{ color: "rgba(255,255,255,.2)", fontWeight: 400, textTransform: "none", letterSpacing: 0 }}>({bio.length}/500)</span>
+                    </span>
+                    <textarea
+                      className="pt-textarea"
+                      placeholder="Tell readers about yourself and your work…"
+                      value={bio}
+                      maxLength={500}
+                      rows={4}
+                      onChange={e => setBio(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="pt-field">
+                    <span className="pt-field-label">Social Links</span>
+                    <div className="pt-social-row">
+                      {(["twitter", "instagram", "linkedin", "website"] as const).map(key => (
+                        <input
+                          key={key}
+                          className="pt-input"
+                          placeholder={
+                            key === "twitter"   ? "Twitter / X URL"  :
+                            key === "instagram" ? "Instagram URL"     :
+                            key === "linkedin"  ? "LinkedIn URL"      :
+                            "Personal website URL"
+                          }
+                          value={socialLinks[key]}
+                          onChange={e => setSocialLinks(p => ({ ...p, [key]: e.target.value }))}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div style={{ display: "flex", gap: 12, marginTop: 20, alignItems: "center", flexWrap: "wrap" }}>
+                    <button
+                      className="pt-btn-gold"
+                      onClick={saveAuthorProfile}
+                      disabled={profileSaving}
+                    >
+                      {profileSaving ? "Saving…" : "Save Profile"}
+                    </button>
+                    <p style={{ fontSize: 12, color: "rgba(255,255,255,.28)", margin: 0, lineHeight: 1.5 }}>
+                      {authorId
+                        ? authorSlug
+                          ? `Your minisite is live at /authors/${authorSlug}`
+                          : "Profile saved. Admin will publish your minisite."
+                        : "Saving creates a draft minisite for admin review."}
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* profile toast */}
+      {profileMsg && (
+        <div className="pt-msg">
+          <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#C9A227", flexShrink: 0 }} />
+          {profileMsg}
+        </div>
+      )}
 
       <div className="pt-div" style={{ margin: "48px 0 0" }} />
 

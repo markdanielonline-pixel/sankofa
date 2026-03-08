@@ -475,6 +475,23 @@ export default function SubmissionsPage() {
         </div>
       </section>
 
+      {/* ══════════════════════════════════════════
+          SIGNUP PROMPT
+      ══════════════════════════════════════════ */}
+      <section className="sec" style={{ background:"#fff", paddingTop:0, paddingBottom:32 }}>
+        <div className="pc">
+          <Reveal>
+            <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", gap:24, padding:"22px 28px", background:"rgba(201,162,39,.06)", border:"1px solid rgba(201,162,39,.22)", borderRadius:16, flexWrap:"wrap" }}>
+              <div>
+                <p style={{ margin:0, fontSize:15, fontWeight:600, color:"var(--ink)" }}>Create your author account to track your submission</p>
+                <p style={{ margin:"4px 0 0", fontSize:13, color:"rgba(11,11,12,.52)" }}>Monitor status, receive decisions, and manage your author profile — all in one place.</p>
+              </div>
+              <a className="btn btnP" href="/auth/signup" style={{ flexShrink:0, whiteSpace:"nowrap" }}>Join as Author →</a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       <hr className="divLine" />
 
       {/* ══════════════════════════════════════════
