@@ -243,13 +243,14 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   useEffect(() => {
     async function check() {
-      const { data: authData } = await supabase.auth.getUser()
-      if (!authData.user) { router.replace("/"); return }
+      const { data: sessionData } = await supabase.auth.getSession()
+      const sessionUser = sessionData.session?.user
+      if (!sessionUser) { router.replace("/"); return }
 
       const { data: profile } = await supabase
         .from("profiles")
         .select("role, full_name")
-        .eq("id", authData.user.id)
+        .eq("id", sessionUser.id)
         .single()
 
       const role = profile?.role as AdminRole | undefined
@@ -259,9 +260,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       }
 
       setUser({
-        id:    authData.user.id,
-        email: authData.user.email ?? "",
-        name:  profile?.full_name ?? authData.user.email?.split("@")[0] ?? "Admin",
+        id:    sessionUser.id,
+        email: sessionUser.email ?? "",
+        name:  profile?.full_name ?? sessionUser.email?.split("@")[0] ?? "Admin",
         role,
       })
       setStatus("authorized")
