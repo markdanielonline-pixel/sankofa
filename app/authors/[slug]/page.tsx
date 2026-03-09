@@ -62,16 +62,43 @@ export interface PressData {
 }
 
 async function getAuthor(slug: string): Promise<AuthorData | null> {
+  console.log("[getAuthor] querying slug:", slug)
+
+  /* Try full query first (requires ALTER TABLE to have been run) */
   const { data, error } = await db
     .from("authors")
     .select("id, slug, name, bio, tagline, photo_url, social_links, template, template_chosen_at, featured_book_id, press_kit_url, user_id")
     .eq("slug", slug)
     .maybeSingle()
-  if (error) {
-    console.error("[getAuthor] Supabase error:", error.message)
+
+  console.log("[getAuthor] full query → data:", JSON.stringify(data), "error:", error?.message ?? null)
+
+  if (!error) return data as AuthorData | null
+
+  /* Fallback: columns from ALTER TABLE may not exist yet — select base columns only */
+  console.warn("[getAuthor] falling back to base columns, reason:", error.message)
+  const { data: base, error: baseErr } = await db
+    .from("authors")
+    .select("id, slug, name, bio, tagline, photo_url, social_links, user_id")
+    .eq("slug", slug)
+    .maybeSingle()
+
+  console.log("[getAuthor] base query → data:", JSON.stringify(base), "error:", baseErr?.message ?? null)
+
+  if (baseErr) {
+    console.error("[getAuthor] base query also failed:", baseErr.message)
     return null
   }
-  return data as AuthorData | null
+
+  /* Inject defaults for missing columns so the rest of the page still works */
+  if (!base) return null
+  return {
+    ...(base as object),
+    template:           "bold",
+    template_chosen_at: null,
+    featured_book_id:   null,
+    press_kit_url:      null,
+  } as AuthorData
 }
 
 async function getBooks(authorId: string): Promise<BookData[]> {
