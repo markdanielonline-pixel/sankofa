@@ -10,13 +10,18 @@ const db = createClient(
 )
 
 export interface AuthorData {
-  id:           string
-  slug:         string
-  name:         string
-  bio:          string | null
-  tagline:      string | null
-  photo_url:    string | null
-  social_links: Record<string, string>
+  id:                  string
+  slug:                string
+  name:                string
+  bio:                 string | null
+  tagline:             string | null
+  photo_url:           string | null
+  social_links:        Record<string, string>
+  template:            "classic" | "bold" | "minimal"
+  template_chosen_at:  string | null
+  featured_book_id:    string | null
+  press_kit_url:       string | null
+  user_id:             string | null
 }
 
 export interface BookData {
@@ -29,10 +34,37 @@ export interface BookData {
   published_at: string | null
 }
 
+export interface EventData {
+  id:          string
+  title:       string
+  description: string | null
+  location:    string | null
+  event_date:  string
+  event_time:  string | null
+  ticket_url:  string | null
+  is_virtual:  boolean
+}
+
+export interface GalleryData {
+  id:         string
+  image_url:  string
+  caption:    string | null
+  sort_order: number
+}
+
+export interface PressData {
+  id:           string
+  outlet:       string
+  headline:     string
+  url:          string | null
+  published_at: string | null
+  excerpt:      string | null
+}
+
 async function getAuthor(slug: string): Promise<AuthorData | null> {
   const { data } = await db
     .from("authors")
-    .select("id, slug, name, bio, tagline, photo_url, social_links")
+    .select("id, slug, name, bio, tagline, photo_url, social_links, template, template_chosen_at, featured_book_id, press_kit_url, user_id")
     .eq("slug", slug)
     .eq("is_published", true)
     .maybeSingle()
@@ -46,6 +78,33 @@ async function getBooks(authorId: string): Promise<BookData[]> {
     .eq("author_id", authorId)
     .order("published_at", { ascending: false })
   return (data ?? []) as BookData[]
+}
+
+async function getEvents(authorId: string): Promise<EventData[]> {
+  const { data } = await db
+    .from("author_events")
+    .select("id, title, description, location, event_date, event_time, ticket_url, is_virtual")
+    .eq("author_id", authorId)
+    .order("event_date", { ascending: true })
+  return (data ?? []) as EventData[]
+}
+
+async function getGallery(authorId: string): Promise<GalleryData[]> {
+  const { data } = await db
+    .from("author_gallery")
+    .select("id, image_url, caption, sort_order")
+    .eq("author_id", authorId)
+    .order("sort_order", { ascending: true })
+  return (data ?? []) as GalleryData[]
+}
+
+async function getPress(authorId: string): Promise<PressData[]> {
+  const { data } = await db
+    .from("author_press")
+    .select("id, outlet, headline, url, published_at, excerpt")
+    .eq("author_id", authorId)
+    .order("published_at", { ascending: false })
+  return (data ?? []) as PressData[]
 }
 
 export async function generateMetadata(
@@ -87,6 +146,20 @@ export default async function AuthorPage(
 
   if (!author) notFound()
 
-  const books = await getBooks(author.id)
-  return <AuthorMinisite author={author} books={books} />
+  const [books, events, gallery, press] = await Promise.all([
+    getBooks(author.id),
+    getEvents(author.id),
+    getGallery(author.id),
+    getPress(author.id),
+  ])
+
+  return (
+    <AuthorMinisite
+      author={author}
+      books={books}
+      events={events}
+      gallery={gallery}
+      press={press}
+    />
+  )
 }
