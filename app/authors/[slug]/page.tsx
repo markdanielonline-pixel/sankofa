@@ -62,48 +62,55 @@ export interface PressData {
 }
 
 async function getAuthor(slug: string): Promise<AuthorData | null> {
-  const { data } = await db
+  const { data, error } = await db
     .from("authors")
     .select("id, slug, name, bio, tagline, photo_url, social_links, template, template_chosen_at, featured_book_id, press_kit_url, user_id")
     .eq("slug", slug)
-    .eq("is_published", true)
     .maybeSingle()
+  if (error) {
+    console.error("[getAuthor] Supabase error:", error.message)
+    return null
+  }
   return data as AuthorData | null
 }
 
 async function getBooks(authorId: string): Promise<BookData[]> {
-  const { data } = await db
+  const { data, error } = await db
     .from("books")
     .select("id, title, description, cover_url, genre, buy_link, published_at")
     .eq("author_id", authorId)
     .order("published_at", { ascending: false })
+  if (error) console.error("[getBooks]", error.message)
   return (data ?? []) as BookData[]
 }
 
 async function getEvents(authorId: string): Promise<EventData[]> {
-  const { data } = await db
+  const { data, error } = await db
     .from("author_events")
     .select("id, title, description, location, event_date, event_time, ticket_url, is_virtual")
     .eq("author_id", authorId)
     .order("event_date", { ascending: true })
+  if (error) console.error("[getEvents]", error.message)
   return (data ?? []) as EventData[]
 }
 
 async function getGallery(authorId: string): Promise<GalleryData[]> {
-  const { data } = await db
+  const { data, error } = await db
     .from("author_gallery")
     .select("id, image_url, caption, sort_order")
     .eq("author_id", authorId)
     .order("sort_order", { ascending: true })
+  if (error) console.error("[getGallery]", error.message)
   return (data ?? []) as GalleryData[]
 }
 
 async function getPress(authorId: string): Promise<PressData[]> {
-  const { data } = await db
+  const { data, error } = await db
     .from("author_press")
     .select("id, outlet, headline, url, published_at, excerpt")
     .eq("author_id", authorId)
     .order("published_at", { ascending: false })
+  if (error) console.error("[getPress]", error.message)
   return (data ?? []) as PressData[]
 }
 
