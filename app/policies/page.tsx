@@ -237,6 +237,7 @@ export default function PoliciesPage() {
     { id:"author",     label:"Author Rights" },
     { id:"content",    label:"Content Standards" },
     { id:"ip",         label:"Intellectual Property" },
+    { id:"refund",     label:"Refund Policy" },
   ]
 
   return (
@@ -389,6 +390,65 @@ export default function PoliciesPage() {
                 <p className="policyText">Cover designs and interior formatting files created by Sankofa as part of a paid service engagement are delivered in full to the author upon project completion. Authors own these files and may use them with any publisher or platform.</p>
               </PolicySection>
 
+              <hr className="divLine" />
+
+              {/* REFUND POLICY */}
+              <PolicySection id="refund" kicker="Section 07" title="Refund Policy">
+                <p className="policyText">At Sankofa Publishers, we provide high-touch, customized publishing and creative services. These include, but are not limited to, ghostwriting, editing, manuscript development, publishing support, formatting, design, branding, and related services.</p>
+                <p className="policyText">Because our work is custom, labor-intensive, and begins immediately upon engagement, <strong>all payments are generally final and non-refundable once a project has begun</strong>, except where required by law or approved at our sole discretion.</p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>1. Commitment to Clients</p>
+                <p className="policyText">We are committed to transparency, communication, and delivering high-quality results. Before any project begins, we ensure that clients understand the scope, process, and expectations. Once a project starts, our team allocates dedicated time, expertise, and internal resources specifically to that client. This commitment is the reason refunds are limited.</p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>2. Why Refunds Are Not Offered After Work Begins</p>
+                <p className="policyText">Refunds are generally not provided once work has started because:</p>
+                <div style={{ display:"flex", flexDirection:"column", gap:0, marginBottom:14 }}>
+                  {[
+                    "Professional time, labor, and creative resources are immediately allocated",
+                    "Project scheduling reserves capacity that cannot be reassigned",
+                    "Research, planning, consultation, and development begin early in the process",
+                    "Custom work cannot be returned, resold, or reversed",
+                    "Digital and intellectual deliverables retain value once created",
+                  ].map(item => (
+                    <div key={item} className="pRow">
+                      <span style={{ color:"rgba(201,162,39,.5)", fontWeight:700, fontSize:12, marginTop:2, flexShrink:0 }}>—</span>
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>3. General No-Refund Policy for Services</p>
+                <p className="policyText">A service is considered "started" once any of the following occurs: project intake, consultation, or planning begins; materials are reviewed or developed; a team member is assigned; or drafts, concepts, or production work begins. Once a service has started, <strong>payments are non-refundable</strong>.</p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>4. Ghostwriting Services (Milestone-Based)</p>
+                <p className="policyText">Ghostwriting projects are structured in phases: Phase 1 (discovery, concept, and initial writing), Phase 2 (continued manuscript development), and Phase 3 (final completion and delivery). Each phase is paid in advance and is non-refundable once started. Approval of a phase constitutes acceptance of that phase. Clients are not obligated to proceed to the next phase, but prior payments remain non-refundable.</p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>5. Creative and Publishing Services</p>
+                <p className="policyText">The following services are non-refundable once started: editing and proofreading, formatting and interior layout, cover design and branding, publishing consultation and support, manuscript review and coaching, and any custom publishing or creative service. Refunds are not issued due to change of mind, project delay, subjective preference, or choosing another provider.</p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>6. Revisions</p>
+                <p className="policyText">Where revisions are included, they exist to refine the work within scope. Revisions do not create eligibility for refunds. Once final approval or delivery is made, the service is considered complete and non-refundable.</p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>7. Deposits, Client Delays, and Digital Deliverables</p>
+                <p className="policyText">Any deposit, booking fee, or advance payment used to secure time, resources, or scheduling is non-refundable. Client delays or non-responsiveness do not qualify for refunds — projects may be paused or rescheduled, but payments for work performed remain non-refundable. All digital files, drafts, and completed work are non-refundable once delivered. Any third-party costs incurred on behalf of the client are non-refundable once incurred.</p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>8. Subscriptions (If Applicable)</p>
+                <p className="policyText">For any Sankofa subscription services: billing is in advance; clients may cancel anytime; cancellation stops future billing only. <strong>No refunds are issued for active billing periods. No prorated refunds are provided. Annual subscriptions are non-refundable once billed or renewed.</strong></p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>9. Refund Review Requests</p>
+                <p className="policyText">While refunds are generally not provided, clients may request a review by contacting <strong>accounts@sankofapublishers.com</strong>. Requests must include full details of the concern. All decisions are made at our sole discretion unless required by law.</p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>10. Chargebacks and Disputes</p>
+                <p className="policyText">Clients agree to contact us first regarding any billing or service issue. Clients must allow 3–5 business days for response. Initiating a chargeback or contacting a financial institution before contacting us and allowing this time is considered a <strong>breach of this policy</strong>. We reserve the right to present project records, approvals, communications, and proof of work in response to disputes.</p>
+
+                <p style={{ fontSize:13, fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:"var(--ink)", margin:"24px 0 8px" }}>11. Legal Compliance</p>
+                <p className="policyText">Nothing in this policy overrides rights granted under applicable law.</p>
+
+                <div style={{ marginTop:18, padding:"16px 20px", background:"rgba(201,162,39,.06)", borderRadius:12, border:"1px solid rgba(201,162,39,.2)" }}>
+                  <p style={{ fontSize:13, color:"rgba(11,11,12,.65)", margin:0, lineHeight:1.7 }}>Billing or refund questions can be sent to <strong>accounts@sankofapublishers.com</strong>. We will respond within 3–5 business days.</p>
+                </div>
+              </PolicySection>
+
             </div>
           </div>
         </div>
@@ -424,6 +484,7 @@ export default function PoliciesPage() {
                   { label:"Author Rights",            email:"authors@sankofapublishers.com" },
                   { label:"Editorial Standards",      email:"submissions@sankofapublishers.com" },
                   { label:"IP and Copyright Claims",  email:"compliance@sankofapublishers.com" },
+                  { label:"Billing & Refunds",        email:"accounts@sankofapublishers.com" },
                   { label:"General Policy Questions", email:"contact@sankofapublishers.com" },
                 ].map(({ label, email }) => (
                   <div key={label} style={{ display:"flex", justifyContent:"space-between", alignItems:"center", padding:"13px 18px", border:"1px solid rgba(255,255,255,.08)", borderRadius:12, background:"rgba(255,255,255,.03)", transition:"background .2s,border-color .2s" }}

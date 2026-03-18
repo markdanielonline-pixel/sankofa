@@ -120,6 +120,7 @@ export default function Footer() {
         <div>
           <span className="fKicker">Policies</span>
           <a href="/policies" className="fLink" style={linkStyle}>Policies &amp; Compliance</a>
+          <a href="/refund-policy" className="fLink" style={linkStyle}>Refund Policy</a>
 
           <div style={{ marginTop: 32 }}>
             <span className="fKicker">Address</span>
