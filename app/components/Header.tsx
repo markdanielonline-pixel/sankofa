@@ -23,6 +23,7 @@ const NAV = [
     children: [
       { label: "Submit a Manuscript",     href: "/submissions",  desc: "Free to submit. Answered within 7 days." },
       { label: "How It Works",           href: "/how-it-works", desc: "From submission to shelf." },
+      { label: "Our Books",              href: "/books",        desc: "The Sankofa list." },
       { label: "What We Publish",        href: "/what-we-publish", desc: "The stories we are looking for." },
       { label: "Distribution",           href: "/distribution", desc: "Available to bookstores. Not dependent on them." },
       { label: "Rights and Royalties",   href: "/royalties",    desc: "60% of net receipts. Clear terms." },
@@ -667,6 +668,7 @@ export default function Header() {
             {[
               { label:"Submit a Manuscript",  href:"/submissions",  desc:"Free to submit. Answered within 7 days." },
               { label:"How It Works", href:"/how-it-works", desc:"From submission to shelf." },
+          { label:"Our Books", href:"/books", desc:"The Sankofa list." },
           { label:"What We Publish", href:"/what-we-publish", desc:"The stories we are looking for." },
           { label:"Distribution", href:"/distribution", desc:"Available to bookstores. Not dependent on them." },
           { label:"Rights and Royalties", href:"/royalties", desc:"60% of net receipts." },

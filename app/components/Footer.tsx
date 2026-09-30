@@ -105,6 +105,7 @@ export default function Footer() {
           {[
             { label: "About",                href: "/about" },
             { label: "How It Works",         href: "/how-it-works" },
+{ label: "Our Books",            href: "/books" },
 { label: "What We Publish",      href: "/what-we-publish" },
 { label: "Distribution",         href: "/distribution" },
 { label: "Rights & Royalties",   href: "/royalties" },

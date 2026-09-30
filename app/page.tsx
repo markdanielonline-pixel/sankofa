@@ -2,6 +2,8 @@ import Link from "next/link"
 import type { Metadata } from "next"
 import { Hero, Section, Heading, Steps, FaqList, Cta, JsonLd, faqJsonLd } from "./components/site/Ui"
 import { FACTS, OFFER_POINTS, FAQS, SITE } from "../lib/content"
+import BookShelf, { getShelfBooks } from "./components/site/BookShelf"
+export const revalidate = 300
 
 export const metadata: Metadata = {
   title: "Sankofa Publishers | Selective Independent Publishing for African, Caribbean & Diaspora Voices",
@@ -19,7 +21,8 @@ const orgLd = {
   email: FACTS.email.general,
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const books = await getShelfBooks()
   return (
     <div className="sk-body">
       <JsonLd data={orgLd} />
@@ -42,6 +45,12 @@ export default function HomePage() {
           <div className="sk-strip-item"><b>{FACTS.responseDays} days</b><span>target for our first response</span></div>
         </div>
       </section>
+
+      <Section tone="paper">
+        <Heading kicker="From the Sankofa list" title="Our first book is out now." />
+        <BookShelf books={books} slots={4} />
+        <div className="sk-btnrow" style={{ marginTop: 28 }}><Link className="sk-btn ghost onlight" href="/books">See all our books</Link></div>
+      </Section>
 
       <Section tone="dark">
         <Heading kicker="Zero publishing fee" title="You should never have to pay to have your book published." />
