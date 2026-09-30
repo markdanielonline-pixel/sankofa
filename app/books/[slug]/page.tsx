@@ -50,7 +50,7 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
     image: b.cover_url || undefined,
     datePublished: b.published_at || undefined,
     description: b.description || undefined,
-    offers: b.price_usd ? { "@type": "Offer", price: b.price_usd, priceCurrency: "USD", availability: "https://schema.org/InStock", url: b.buy_link || undefined } : undefined,
+    offers: b.price_usd ? { "@type": "Offer", price: b.price_usd, priceCurrency: "USD", availability: "https://schema.org/InStock", url: `${SITE.url}/books/${slug}` } : undefined,
   }
   return (
     <div className="sk-body">
