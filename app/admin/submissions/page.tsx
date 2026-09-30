@@ -61,6 +61,18 @@ export default function SubmissionsPage() {
 
   async function updateStatus(id: string, status: SubmissionStatus) {
     setUpdating(id)
+    // New-system submissions go through the owner decision workflow so emails, contracts and the audit trail happen.
+    const { data: row } = await supabase.from("submissions").select("title_id").eq("id", id).maybeSingle()
+    if (row?.title_id && status !== "pending") {
+      const decision = status === "accepted" ? "accepted" : status === "conditional" ? "conditional_acceptance" : "declined_revisable"
+      const note = decision === "accepted" ? "" : (window.prompt("Write a short, kind note to the author (required):") || "")
+      if (decision !== "accepted" && note.trim().length < 20) { showToast("A note to the author is required."); setUpdating(null); return }
+      const r = await supabase.rpc("owner_decide", { p_title: row.title_id, p_decision: decision, p_summary: note, p_note: "" })
+      if (r.error) showToast(`Error: ${r.error.message}`)
+      else { setSubmissions(prev => prev.map(s => s.id === id ? { ...s, status } : s)); showToast("Decision saved and author emailed") }
+      setUpdating(null)
+      return
+    }
     const { error } = await supabase
       .from("submissions")
       .update({ status, updated_at: new Date().toISOString(), reviewed_by: admin.id })
