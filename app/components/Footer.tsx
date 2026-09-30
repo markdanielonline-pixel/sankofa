@@ -21,11 +21,11 @@ export default function Footer() {
     <footer
       className={body.className}
       style={{
-        position: "relative",          /* ← allows page signature to overlap */
-        zIndex: 0,                     /* ← sits below the sigImg z-index:4   */
+        position: "relative",          /* â† allows page signature to overlap */
+        zIndex: 0,                     /* â† sits below the sigImg z-index:4   */
         background: "#050505",
         color: "white",
-        paddingTop: "160px",           /* ← space for the overlapping image   */
+        paddingTop: "160px",           /* â† space for the overlapping image   */
       }}
     >
       <style>{`
@@ -53,14 +53,14 @@ export default function Footer() {
         }
       `}</style>
 
-      {/* ── TOP GOLD LINE ── */}
+      {/* â”€â”€ TOP GOLD LINE â”€â”€ */}
       <div style={{
         height: 1,
         background: "linear-gradient(90deg, #C9A227 0%, rgba(201,162,39,.3) 50%, transparent 100%)",
         marginBottom: 0,
       }} />
 
-      {/* ── MAIN FOOTER GRID ── */}
+      {/* â”€â”€ MAIN FOOTER GRID â”€â”€ */}
       <div style={{
         maxWidth: 1080,
         margin: "0 auto",
@@ -70,7 +70,7 @@ export default function Footer() {
         gap: 48,
       }}>
 
-        {/* ── BRAND COLUMN ── */}
+        {/* â”€â”€ BRAND COLUMN â”€â”€ */}
         <div>
           <img
             src="/images/logo_white_text.png"
@@ -99,13 +99,17 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ── NAVIGATION COLUMN ── */}
+        {/* â”€â”€ NAVIGATION COLUMN â”€â”€ */}
         <div>
           <span className="fKicker">Navigation</span>
           {[
             { label: "About",                href: "/about" },
-            { label: "Publishing Model",     href: "/model" },
-            { label: "Services",             href: "/services" },
+            { label: "How It Works",         href: "/how-it-works" },
+{ label: "What We Publish",      href: "/what-we-publish" },
+{ label: "Distribution",         href: "/distribution" },
+{ label: "Rights & Royalties",   href: "/royalties" },
+{ label: "FAQ",                  href: "/faq" },
+            { label: "Author Services",             href: "/services" },
             { label: "Media",                href: "/media" },
             { label: "Partnerships",         href: "/partnership" },
             { label: "Board of Advisors",    href: "/board_of_advisors" },
@@ -116,7 +120,7 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* ── POLICIES + ADDRESS COLUMN ── */}
+        {/* â”€â”€ POLICIES + ADDRESS COLUMN â”€â”€ */}
         <div>
           <span className="fKicker">Policies</span>
           <a href="/policies" className="fLink" style={linkStyle}>Policies &amp; Compliance</a>
@@ -153,14 +157,14 @@ export default function Footer() {
               onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(201,162,39,.08)"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "#C9A227" }}
               onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "transparent"; (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(201,162,39,.4)" }}
             >
-              Submit Your Manuscript →
+              Submit Your Manuscript â†’
             </a>
           </div>
         </div>
 
       </div>
 
-      {/* ── BOTTOM BAR ── */}
+      {/* â”€â”€ BOTTOM BAR â”€â”€ */}
       <div style={{
         borderTop: "1px solid rgba(255,255,255,.07)",
         padding: "20px 32px",
@@ -173,7 +177,7 @@ export default function Footer() {
         gap: 12,
       }}>
         <p style={{ margin: 0, fontSize: 11, color: "rgba(255,255,255,.28)", letterSpacing: ".04em" }}>
-          © 2026 SANKOFA PUBLISHERS, LLC · ALL RIGHTS RESERVED
+          Â© 2026 SANKOFA PUBLISHERS, LLC Â· ALL RIGHTS RESERVED
         </p>
         <p className={display.className} style={{ margin: 0, fontSize: 12, color: "rgba(201,162,39,.35)", fontWeight: 300, letterSpacing: ".06em" }}>
           Substance over spectacle.

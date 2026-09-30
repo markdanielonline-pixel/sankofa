@@ -528,16 +528,16 @@ export default function BoardOfAdvisorsPage() {
               <h2 className={display.className} style={{ fontSize:"clamp(24px,2.4vw,36px)", fontWeight:400, letterSpacing:"-0.022em", lineHeight:1.1, margin:"0 0 14px" }}>
                 Royalty &amp; Financial Transparency
               </h2>
-              <p className="p">Sankofa is structured for transparency at every financial level. Authors retain 100% copyright, 100% intellectual property, and 100% of net royalty earnings.</p>
+              <p className="p">Sankofa is structured for transparency at every financial level. Authors keep their copyright and receive 60% of defined net receipts, reported quarterly.</p>
               <p className="p">We do not withhold royalties as leverage. We operate with clear reporting practices and defined payment cycles. No hidden adjustments. No unexplained deductions.</p>
             </Reveal>
 
             <Reveal delay={0.15}>
               <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
                 {[
-                  { label:"Copyright Ownership",       value:"100% retained by author" },
-                  { label:"Royalty Earnings",           value:"100% of net revenue" },
-                  { label:"Intellectual Property",      value:"100% retained by author" },
+                  { label:"Copyright Ownership",       value:"Retained by author" },
+                  { label:"Royalty Earnings",           value:"60% of defined net receipts" },
+                  { label:"Intellectual Property",      value:"Retained by author" },
                   { label:"Reporting",                  value:"Full transparency, defined cycles" },
                   { label:"Royalty Leverage",           value:"Never used" },
                   { label:"Hidden Fees",                value:"None" },

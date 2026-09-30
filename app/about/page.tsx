@@ -311,15 +311,15 @@ export default function AboutPage() {
                   <h2 className={display.className} style={{ fontSize:"clamp(26px,2.8vw,38px)", fontWeight:400, letterSpacing:"-0.022em", lineHeight:1.1, margin:"0 0 14px" }}>Publishing as Infrastructure</h2>
                 </Reveal>
                 <Reveal delay={0.1}>
-                  <p className="p">Sankofa Publishers is a hybrid publishing house built on more than 47 years of combined experience across editorial development, manuscript evaluation, design, production management, print systems, and distribution strategy.</p>
+                  <p className="p">Sankofa Publishers is an independent publishing house. We take on a small list of books, publish them with care, and pay authors 60% of defined net receipts. There is no publishing fee for accepted books.</p>
                   <p className="p">Though the imprint itself is newly established, our foundation is not. We understand publishing as infrastructure. We understand narrative as power. We understand ownership as non-negotiable.</p>
                   <p className="p" style={{ fontWeight:600, color:"var(--ink)" }}>We are building a press designed to endure.</p>
                 </Reveal>
               </div>
               <div style={{ display:"flex", flexDirection:"column", gap:14 }}>
                 {[
-                  { label:"47+",  sub:"Years Combined Experience" },
-                  { label:"100%", sub:"Author Rights Retained" },
+                  { label:"$0",  sub:"Publishing Fee For Accepted Books" },
+                  { label:"60%", sub:"Of Net Receipts To The Author" },
                   { label:"$0",   sub:"Cost to Publish" },
                 ].map(({ label, sub }, i) => (
                   <Reveal key={label} delay={i * 0.11}>
@@ -381,7 +381,7 @@ export default function AboutPage() {
             {[
               { title:"Substance over spectacle",     body:"Standards driven. Every title is built to outlast market cycles. We are not volume driven. We are not trend responsive." },
               { title:"Preparation over convenience", body:"We do not rush unfinished manuscripts to market. Readiness is non-negotiable. Discipline over convenience, always." },
-              { title:"Ownership over dependency",    body:"Authors retain 100% copyright, 100% royalty earnings, and full intellectual property control. Always." },
+              { title:"Ownership over dependency",    body:"Authors keep their copyright. Sankofa holds an exclusive publishing license for an initial five-year term, and the author receives 60% of defined net receipts." },
               { title:"Intellectual rigor",           body:"Strong ideas, responsible claims, coherent logic, credible evidence. We welcome controversy where it is earned." },
               { title:"Cultural integrity",           body:"Cultural grounding is not exclusion — it is responsibility. We exist to support work contributing to African and diasporic discourse." },
               { title:"Transparency always",          body:"Every unit sold, every fee deducted, every royalty paid — visible. No hidden adjustments. No unexplained deductions." },
@@ -506,7 +506,7 @@ export default function AboutPage() {
           </div>
           <Reveal delay={0.1}>
             <p style={{ marginTop:22, fontSize:11, color:"rgba(11,11,12,.38)", letterSpacing:".06em" }}>
-              REVIEW WINDOW: UP TO 45 DAYS &nbsp;·&nbsp; PROFESSIONAL COMMUNICATION THROUGHOUT
+              RESPONSE TARGET: 7 DAYS &nbsp;·&nbsp; PROFESSIONAL COMMUNICATION THROUGHOUT
             </p>
           </Reveal>
         </div>
@@ -529,14 +529,14 @@ export default function AboutPage() {
                   <p className="p" style={{ color:"rgba(255,255,255,.62)", fontSize:15 }}>Aid without ownership becomes dependency. Development without control becomes rebranded colonization. Publishing intersects directly with this reality.</p>
                 </div>
                 <div style={{ display:"flex", flexDirection:"column", justifyContent:"center", gap:14, paddingTop:8 }}>
-                  {["100% Copyright Retained","100% Royalty Earnings","Full IP Ownership","No rights acquisition"].map(item => (
+                  {["Author Keeps Copyright","60% Of Net Receipts","No Publishing Fee","Unlisted Rights Stay With You"].map(item => (
                     <div key={item} style={{ display:"flex", alignItems:"center", gap:12, borderBottom:"1px solid rgba(255,255,255,.07)", paddingBottom:14 }}>
                       <span style={{ width:6, height:6, borderRadius:"50%", background:"#C9A227", display:"block", flexShrink:0 }} />
                       <span style={{ fontSize:14, fontWeight:500, color:"rgba(255,255,255,.82)" }}>{item}</span>
                     </div>
                   ))}
                   <p className="p" style={{ color:"rgba(255,255,255,.36)", fontSize:12, margin:0, letterSpacing:".02em" }}>
-                    We receive only limited non-exclusive publishing and distribution permission under formal agreement.
+                    We receive an exclusive worldwide license for print, ebook and audio for an initial five-year term, under a written agreement. All other rights remain with the author.
                   </p>
                 </div>
               </div>

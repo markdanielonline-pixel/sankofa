@@ -8,9 +8,9 @@ import { usePathname } from "next/navigation"
 const display = Fraunces({ subsets: ["latin"], weight: ["300", "400", "600"] })
 const body    = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] })
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    NAV STRUCTURE
-═══════════════════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const NAV = [
   {
     label: "About",
@@ -21,9 +21,13 @@ const NAV = [
     label: "Publish",
     href:  "/submissions",
     children: [
-      { label: "Submit a Manuscript",     href: "/submissions",  desc: "Two pathways. One standard." },
-      { label: "Our Publishing Model",    href: "/model",        desc: "Free. Author-owned. No compromise." },
-      { label: "Professional Services",   href: "/services",     desc: "Editorial, design, and production." },
+      { label: "Submit a Manuscript",     href: "/submissions",  desc: "Free to submit. Answered within 7 days." },
+      { label: "How It Works",           href: "/how-it-works", desc: "From submission to shelf." },
+      { label: "What We Publish",        href: "/what-we-publish", desc: "The stories we are looking for." },
+      { label: "Distribution",           href: "/distribution", desc: "Available to bookstores. Not dependent on them." },
+      { label: "Rights and Royalties",   href: "/royalties",    desc: "60% of net receipts. Clear terms." },
+      { label: "Frequently Asked",       href: "/faq",          desc: "Plain answers." },
+      { label: "Author Services",   href: "/services",     desc: "Optional. Never required." },
     ],
   },
   {
@@ -41,7 +45,7 @@ const NAV = [
     children: [
       { label: "Media & Press",   href: "/media",        desc: "Interviews, press kits, appearances." },
       { label: "Partnerships",    href: "/partnership",  desc: "Build something that lasts." },
-      { label: "Q&A",             href: "/qa",           desc: "Honest answers to hard questions." },
+      { label: "Q&A",             href: "/faq",           desc: "Honest answers to hard questions." },
       { label: "Contact",         href: "/contact",      desc: "We respond to every inquiry." },
     ],
   },
@@ -52,24 +56,24 @@ const NAV = [
   },
 ]
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    CSS
-═══════════════════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const css = `
   :root {
     --ink:#0B0B0C; --paper:#F6F3EE; --gold:#C9A227;
     --header-h: 72px;
   }
 
-  /* ── base reset ── */
+  /* â”€â”€ base reset â”€â”€ */
   *, *::before, *::after { box-sizing:border-box; }
 
-  /* ── scroll lock ── */
+  /* â”€â”€ scroll lock â”€â”€ */
   body.nav-open { overflow:hidden; }
 
-  /* ══════════════════════════════════════════
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      HEADER SHELL
-  ══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   .spHeader {
     position: fixed; top:0; left:0; right:0; z-index: 1000;
     height: var(--header-h);
@@ -84,13 +88,13 @@ const css = `
     box-shadow: 0 1px 0 rgba(201,162,39,.18), 0 8px 40px rgba(0,0,0,.35);
   }
 
-  /* top of page — fully transparent */
+  /* top of page â€” fully transparent */
   .spHeader.top {
     background: transparent;
     box-shadow: none;
   }
 
-  /* ── inner layout ── */
+  /* â”€â”€ inner layout â”€â”€ */
   .spInner {
     max-width: 1200px; margin: 0 auto;
     padding: 0 32px;
@@ -99,7 +103,7 @@ const css = `
     position: relative; z-index: 2;
   }
 
-  /* ── gold line at very top ── */
+  /* â”€â”€ gold line at very top â”€â”€ */
   .spTopLine {
     position: absolute; top:0; left:0; right:0; height:2px;
     background: linear-gradient(90deg, transparent 0%, #C9A227 30%, #f5d878 50%, #C9A227 70%, transparent 100%);
@@ -108,9 +112,9 @@ const css = `
   }
   .spHeader.scrolled .spTopLine { opacity: 1; }
 
-  /* ══════════════════════════════════════════
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      LOGO
-  ══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   .spLogo {
     display: flex; align-items: center; gap: 11px;
     text-decoration: none; flex-shrink: 0;
@@ -139,9 +143,9 @@ const css = `
     color: rgba(201,162,39,.75); line-height: 1; font-weight: 500;
   }
 
-  /* ══════════════════════════════════════════
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      DESKTOP NAV
-  ══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   .spNav {
     display: flex; align-items: center; gap: 4px;
     list-style: none; margin: 0; padding: 0;
@@ -174,7 +178,7 @@ const css = `
   }
   .spNavItem.open .spChevron { transform: rotate(180deg); opacity: 1; }
 
-  /* ── AUTHOR LOGIN pill ── */
+  /* â”€â”€ AUTHOR LOGIN pill â”€â”€ */
   .spLoginBtn {
     margin-left: 4px;
     padding: 9px 18px !important;
@@ -191,7 +195,7 @@ const css = `
     color: white !important;
   }
 
-  /* ── SUPPORT special pill ── */
+  /* â”€â”€ SUPPORT special pill â”€â”€ */
   .spSupportBtn {
     margin-left: 8px;
     padding: 9px 20px !important;
@@ -210,7 +214,7 @@ const css = `
     box-shadow: 0 6px 20px rgba(201,162,39,.22);
   }
 
-  /* ── JOIN AS AUTHOR secondary pill ── */
+  /* â”€â”€ JOIN AS AUTHOR secondary pill â”€â”€ */
   .spJoinBtn {
     margin-left: 4px;
     padding: 9px 18px !important;
@@ -228,7 +232,7 @@ const css = `
     color: #f5d878 !important;
   }
 
-  /* ── SUBMIT CTA ── */
+  /* â”€â”€ SUBMIT CTA â”€â”€ */
   .spCta {
     margin-left: 6px;
     padding: 9px 22px;
@@ -250,9 +254,9 @@ const css = `
     box-shadow: 0 10px 30px rgba(201,162,39,.42);
   }
 
-  /* ══════════════════════════════════════════
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      DROPDOWN
-  ══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   .spDropdown {
     position: absolute; top: calc(100% + 10px); left: 50%;
     transform: translateX(-50%) translateY(6px);
@@ -301,9 +305,9 @@ const css = `
     margin: 4px 6px;
   }
 
-  /* ══════════════════════════════════════════
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      MOBILE HAMBURGER
-  ══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   .spBurger {
     display: none;
     flex-direction: column; gap: 5px;
@@ -323,9 +327,9 @@ const css = `
   .spBurger.open span:nth-child(2) { opacity: 0; width: 12px; }
   .spBurger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
 
-  /* ══════════════════════════════════════════
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      MOBILE DRAWER
-  ══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   .spDrawer {
     position: fixed; inset: 0; z-index: 999;
     background: rgba(11,11,12,.98);
@@ -408,9 +412,9 @@ const css = `
   }
   .spDrawerCtaG:hover { background: rgba(201,162,39,.08); border-color: rgba(201,162,39,.65); }
 
-  /* ══════════════════════════════════════════
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      ACTIVE INDICATOR
-  ══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   .spNavTrigger.current::after {
     content: '';
     position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
@@ -418,9 +422,9 @@ const css = `
     background: #C9A227;
   }
 
-  /* ══════════════════════════════════════════
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      KEYBOARD / FOCUS
-  ══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   .spNavTrigger:focus-visible,
   .spDropItem:focus-visible,
   .spCta:focus-visible {
@@ -428,9 +432,9 @@ const css = `
     outline-offset: 2px;
   }
 
-  /* ══════════════════════════════════════════
+  /* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      RESPONSIVE
-  ══════════════════════════════════════════ */
+  â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
   @media(max-width:960px) {
     .spNav, .spCta, .spJoinBtn { display:none !important; }
     .spBurger { display:flex; }
@@ -440,9 +444,9 @@ const css = `
   }
 `
 
-/* ═══════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    COMPONENT
-═══════════════════════════════════════════════════════════ */
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 export default function Header() {
   const pathname  = usePathname()
   const [scrolled, setScrolled]   = useState(false)
@@ -500,8 +504,8 @@ export default function Header() {
 
         <div className="spInner">
 
-          {/* ── LOGO ── */}
-          <Link href="/" className="spLogo" aria-label="Sankofa Publishers — Home">
+          {/* â”€â”€ LOGO â”€â”€ */}
+          <Link href="/" className="spLogo" aria-label="Sankofa Publishers â€” Home">
             <img
               src="/images/logo.png"
               alt="Sankofa Publishers"
@@ -513,7 +517,7 @@ export default function Header() {
             </div>
           </Link>
 
-          {/* ── DESKTOP NAV ── */}
+          {/* â”€â”€ DESKTOP NAV â”€â”€ */}
           <nav aria-label="Main navigation">
             <ul className="spNav" role="list">
               {NAV.map(item => {
@@ -601,7 +605,7 @@ export default function Header() {
             </ul>
           </nav>
 
-          {/* ── MOBILE HAMBURGER ── */}
+          {/* â”€â”€ MOBILE HAMBURGER â”€â”€ */}
           <button
             className={`spBurger ${mobileOpen ? "open" : ""}`}
             onClick={() => setMobileOpen(o => !o)}
@@ -615,9 +619,9 @@ export default function Header() {
         </div>
       </header>
 
-      {/* ══════════════════════════════════════════
+      {/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
           MOBILE DRAWER
-      ══════════════════════════════════════════ */}
+      â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */}
       <nav
         className={`spDrawer ${mobileOpen ? "open" : ""} ${body.className}`}
         aria-label="Mobile navigation"
@@ -637,7 +641,7 @@ export default function Header() {
             onClick={() => setMobileOpen(false)}
             aria-label="Close menu"
           >
-            ×
+            Ã—
           </button>
         </div>
 
@@ -660,9 +664,13 @@ export default function Header() {
           <div className="spDrawerSection">
             <span className="spDrawerGroup">Publish</span>
             {[
-              { label:"Submit a Manuscript",  href:"/submissions",  desc:"Two pathways. One standard." },
-              { label:"Our Publishing Model", href:"/model",        desc:"Free. Author-owned. No compromise." },
-              { label:"Professional Services",href:"/services",     desc:"Editorial, design, and production." },
+              { label:"Submit a Manuscript",  href:"/submissions",  desc:"Free to submit. Answered within 7 days." },
+              { label:"How It Works", href:"/how-it-works", desc:"From submission to shelf." },
+          { label:"What We Publish", href:"/what-we-publish", desc:"The stories we are looking for." },
+          { label:"Distribution", href:"/distribution", desc:"Available to bookstores. Not dependent on them." },
+          { label:"Rights and Royalties", href:"/royalties", desc:"60% of net receipts." },
+          { label:"FAQ", href:"/faq", desc:"Plain answers." },
+              { label:"Author Services",href:"/services",     desc:"Optional. Never required." },
             ].map(l => (
               <Link key={l.href} href={l.href} className="spDrawerLink" onClick={() => setMobileOpen(false)}>
                 <span>{l.label}</span>
@@ -692,7 +700,7 @@ export default function Header() {
             {[
               { label:"Media & Press",  href:"/media",       desc:"Interviews, press kits, appearances." },
               { label:"Partnerships",   href:"/partnership", desc:"Build something that lasts." },
-              { label:"Q&A",            href:"/qa",          desc:"Honest answers to hard questions." },
+              { label:"Q&A",            href:"/faq",          desc:"Honest answers to hard questions." },
               { label:"Contact",        href:"/contact",     desc:"We respond to every inquiry." },
             ].map(l => (
               <Link key={l.href} href={l.href} className="spDrawerLink" onClick={() => setMobileOpen(false)}>
