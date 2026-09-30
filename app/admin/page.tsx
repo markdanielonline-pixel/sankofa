@@ -50,7 +50,7 @@ export default function AdminDashboard() {
         { data: recentSubs },
       ] = await Promise.all([
         supabase.from("profiles").select("*", { count: "exact", head: true }).eq("role", "author"),
-        supabase.from("submissions").select("*", { count: "exact", head: true }).eq("status", "pending"),
+        supabase.from("submissions").select("*", { count: "exact", head: true }).in("status", ["pending","submitted"]),
         supabase.from("profiles").select("*", { count: "exact", head: true }).in("role", ["super_admin", "editor", "support"]),
         supabase.from("submissions").select("*", { count: "exact", head: true }),
         supabase.from("profiles").select("id,full_name,email,role,created_at").eq("role","author").order("created_at", { ascending: false }).limit(5),

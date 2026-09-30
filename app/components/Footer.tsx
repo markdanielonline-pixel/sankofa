@@ -78,7 +78,7 @@ export default function Footer() {
             style={{ width: 220, marginBottom: 20, display: "block" }}
           />
           <p style={{ fontSize: 13, color: "rgba(255,255,255,.50)", lineHeight: 1.75, maxWidth: 280, margin: "0 0 24px" }}>
-            Academic publishing with cultural responsibility, global distribution, and institutional standards.
+            An independent publishing house for stories the world still needs to hear. No publishing fee for accepted books. 6300 Riverside Plaza Ln. NW, Ste 100, Albuquerque, NM 87120.
           </p>
 
           {/* contact emails */}

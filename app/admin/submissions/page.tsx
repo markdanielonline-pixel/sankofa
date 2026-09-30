@@ -55,7 +55,7 @@ export default function SubmissionsPage() {
       .from("submissions")
       .select("id,title,author_name,author_email,path,status,ai_disclosed,synopsis,notes,submitted_at,updated_at")
       .order("submitted_at", { ascending: false })
-    setSubmissions((data ?? []) as Submission[])
+    setSubmissions(((data ?? []) as Submission[]).map(s => ((s.status as string) === "submitted" ? { ...s, status: "pending" as const } : s)))
     setLoading(false)
   }
 
