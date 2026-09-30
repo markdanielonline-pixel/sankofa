@@ -65,6 +65,18 @@ export function BookDetails({ titleId, title, onClose, onSaved }: { titleId: str
     setMsg("Saved. The system will move the book forward on its own once everything is filled in.")
     onSaved()
   }
+  async function uploadFile(kind: "cover" | "interior", file?: File) {
+    if (!file) return
+    setMsg("Uploading " + kind + "...")
+    const path = `${titleId}/${kind}-${Date.now()}.pdf`
+    const up = await supabase.storage.from("book-files").upload(path, file, { contentType: "application/pdf", upsert: false })
+    if (up.error) { setMsg(up.error.message); return }
+    const { error } = await supabase.rpc("staff_set_book_files", { p_title: titleId, p_cover: kind === "cover" ? path : "", p_interior: kind === "interior" ? path : "" })
+    if (error) { setMsg(error.message); return }
+    setF({ ...f, [kind === "cover" ? "cover_path" : "interior_path"]: path, bookvault_step: null, bookvault_error: null })
+    setMsg(kind + " uploaded. Once both files are in, the BookVault handoff runs by itself.")
+    onSaved()
+  }
   const inp = { width: "100%", padding: 8, borderRadius: 6, marginBottom: 8 } as const
   return (
     <div className="a-card" style={{ marginTop: 10 }}>
@@ -80,6 +92,17 @@ export function BookDetails({ titleId, title, onClose, onSaved }: { titleId: str
         <input style={inp} placeholder="BISAC codes, separated by commas (e.g. REL012000)" value={f.bisac_codes || ""} onChange={set("bisac_codes")} />
         <label style={{ fontSize: 12, opacity: 0.7 }}>Publication date (the book publishes itself on this day)</label>
         <input style={inp} type="date" value={f.approved_publication_date || ""} onChange={set("approved_publication_date")} />
+        <div style={{ borderTop: "1px solid rgba(255,255,255,.12)", paddingTop: 10, marginTop: 6 }}>
+          <b style={{ fontSize: 13 }}>Final print files (sent to BookVault automatically)</b>
+          <div style={{ fontSize: 12, opacity: 0.7, margin: "4px 0 8px" }}>
+            {f.bookvault_step ? "BookVault status: " + f.bookvault_step.replace(/_/g, " ") : "Upload both PDFs and the handoff starts on its own."}
+            {f.bookvault_error ? " Problem: " + f.bookvault_error : ""}
+          </div>
+          <label style={{ fontSize: 12, opacity: 0.7 }}>Full cover PDF (back + spine + front) {f.cover_path ? "(uploaded)" : ""}</label>
+          <input style={inp} type="file" accept="application/pdf" onChange={(e) => uploadFile("cover", e.target.files?.[0])} />
+          <label style={{ fontSize: 12, opacity: 0.7 }}>Interior PDF {f.interior_path ? "(uploaded)" : ""}</label>
+          <input style={inp} type="file" accept="application/pdf" onChange={(e) => uploadFile("interior", e.target.files?.[0])} />
+        </div>
       </div>
       <div style={{ display: "flex", gap: 8 }}>
         <button className="a-btn-gold" onClick={save}>Save</button>
