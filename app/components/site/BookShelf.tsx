@@ -17,7 +17,7 @@ export async function getShelfBooks(): Promise<ShelfBook[]> {
     const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
     const { data } = await db
       .from("books")
-      .select("id, title, description, cover_url, genre, buy_link, published_at, authors(name, slug)")
+      .select("id, title, description, cover_url, genre, buy_link, published_at, authors!books_author_id_fkey(name, slug)")
       .order("published_at", { ascending: false })
     return ((data ?? []) as unknown) as ShelfBook[]
   } catch {
