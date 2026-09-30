@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from "react"
+import { supabase } from "@/lib/supabase"
 import { Fraunces, Inter } from "next/font/google"
 
 const display = Fraunces({ subsets: ["latin"], weight: ["300", "400", "600"] })
@@ -144,9 +145,9 @@ function ContactForm() {
   const handleSubmit = async () => {
     if (!name || !email || !message) return
     setSending(true)
-    // Simulate send — replace with your actual form handler / API route
-    await new Promise(r => setTimeout(r, 1200))
+    const { error } = await supabase.rpc("submit_inquiry", { p_name: name, p_email: email, p_subject: subject, p_body: message, p_dept: dept })
     setSending(false)
+    if (error) { window.alert(error.message || "Sorry, your message could not be sent. Please email contact@sankofapublishers.com"); return }
     setSent(true)
   }
 
