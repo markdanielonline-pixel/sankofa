@@ -24,9 +24,9 @@ export default function HomePage() {
     <div className="sk-body">
       <JsonLd data={orgLd} />
       <Hero
-        kicker="Sankofa Publishers"
-        title={<>A publishing house built for the stories the world still needs to hear.</>}
-        lead={`Sankofa is a selective independent publisher for African, Caribbean and global diaspora voices. Accepted books are published with no publishing fee, professional production and worldwide distribution, and you earn ${FACTS.royaltyPct}% of net receipts.`}
+        kicker="No publishing fee. Ever."
+        title={<>We invest in the books. You keep your rights.</>}
+        lead={`Sankofa is an independent publisher investing in books that can have a positive impact on Africa, the Caribbean and the global diaspora. If we accept your book, you pay nothing to publish it. We pay for the professional design, production and worldwide distribution, and you earn ${FACTS.royaltyPct}% of net receipts.`}
       >
         <div className="sk-btnrow">
           <Link className="sk-btn primary" href="/submissions">Submit Your Manuscript</Link>
@@ -42,6 +42,23 @@ export default function HomePage() {
           <div className="sk-strip-item"><b>{FACTS.responseDays} days</b><span>target for our first response</span></div>
         </div>
       </section>
+
+      <Section tone="dark">
+        <Heading kicker="Zero publishing fee" title="You should never have to pay to have your book published." />
+        <div className="sk-two">
+          <div>
+            <p className="sk-p">Many companies that call themselves publishers charge authors thousands of dollars before a single copy is sold. Sankofa does not. When we accept a book, we carry the cost of editing guidance, cover and interior design, production and distribution set-up.</p>
+            <p className="sk-p">That is why we are selective. We put our own money behind each book, so we only choose books we believe can make a real difference for readers across Africa, the Caribbean and the diaspora.</p>
+          </div>
+          <div>
+            <p className="sk-p"><strong>Free to submit. Free to be assessed. No fee if accepted.</strong> Optional paid services exist, but they are never required and never influence our decision.</p>
+            <div className="sk-btnrow" style={{ marginTop: 18 }}>
+              <Link className="sk-btn primary" href="/submissions">Submit Your Manuscript</Link>
+              <Link className="sk-btn ghost" href="/compare">See how we compare</Link>
+            </div>
+          </div>
+        </div>
+      </Section>
 
       <Section tone="paper">
         <Heading kicker="What you get" title="Traditional publishing without the traditional barriers. Independent publishing without doing everything yourself." />

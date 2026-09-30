@@ -26,6 +26,7 @@ const NAV = [
       { label: "What We Publish",        href: "/what-we-publish", desc: "The stories we are looking for." },
       { label: "Distribution",           href: "/distribution", desc: "Available to bookstores. Not dependent on them." },
       { label: "Rights and Royalties",   href: "/royalties",    desc: "60% of net receipts. Clear terms." },
+      { label: "How We Compare",         href: "/compare",      desc: "Traditional, hybrid, self, Sankofa." },
       { label: "Frequently Asked",       href: "/faq",          desc: "Plain answers." },
       { label: "Author Services",   href: "/services",     desc: "Optional. Never required." },
     ],
@@ -669,6 +670,7 @@ export default function Header() {
           { label:"What We Publish", href:"/what-we-publish", desc:"The stories we are looking for." },
           { label:"Distribution", href:"/distribution", desc:"Available to bookstores. Not dependent on them." },
           { label:"Rights and Royalties", href:"/royalties", desc:"60% of net receipts." },
+          { label:"How We Compare", href:"/compare", desc:"Traditional, hybrid, self, Sankofa." },
           { label:"FAQ", href:"/faq", desc:"Plain answers." },
               { label:"Author Services",href:"/services",     desc:"Optional. Never required." },
             ].map(l => (
