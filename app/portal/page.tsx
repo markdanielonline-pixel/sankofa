@@ -58,6 +58,30 @@ export default function Portal() {
   }, [])
   useEffect(() => { load() }, [load])
 
+  const [pay, setPay] = useState<string>("")
+  useEffect(() => {
+    if (!signedIn) return
+    ;(async () => {
+      const { data: s } = await supabase.auth.getSession()
+      const tok = s.session?.access_token
+      if (!tok) return
+      try {
+        const r = await fetch("/api/stripe/status", { headers: { Authorization: `Bearer ${tok}` } })
+        const j = await r.json()
+        setPay(j.status || "")
+      } catch { /* payments card stays hidden */ }
+    })()
+  }, [signedIn])
+
+  async function setupPayments() {
+    setBusy(true); setMsg("")
+    const { data: s } = await supabase.auth.getSession()
+    const r = await fetch("/api/stripe/connect", { method: "POST", headers: { Authorization: `Bearer ${s.session?.access_token}` } })
+    const j = await r.json()
+    setBusy(false)
+    if (j.url) window.location.href = j.url; else setMsg(j.error || "Could not start payment setup. Please try again.")
+  }
+
   async function sign(titleId: string) {
     setBusy(true); setMsg("")
     const { error } = await supabase.rpc("author_sign_contract", { p_title: titleId, p_typed_name: name })
@@ -96,6 +120,21 @@ export default function Portal() {
           <Link className="sk-btn primary" href="/submissions">Submit a new manuscript</Link>
           <Link className="sk-btn ghost onlight" href="/portal/profile">Edit my author page</Link>
         </div>
+
+        {(pay === "not_started" || pay === "incomplete" || pay === "ready") && (
+          <div className="sk-card" style={{ marginBottom: 20 }}>
+            <h3 className="sk-h3" style={{ marginBottom: 6 }}>Royalty payments</h3>
+            {pay === "ready" ? (
+              <p style={{ margin: 0 }}>Your payment details are set up. Royalties are paid automatically each quarter once you reach the $50 minimum.</p>
+            ) : (
+              <>
+                <p style={{ margin: "0 0 12px" }}>{pay === "incomplete" ? "Your payment setup is not finished yet. Finish it so we can pay you." : "Set up where we send your royalties. It takes a few minutes and is handled securely by Stripe."}</p>
+                <button className="sk-btn primary" onClick={setupPayments} disabled={busy}>{pay === "incomplete" ? "Finish payment setup" : "Set up payments"}</button>
+              </>
+            )}
+          </div>
+        )}
+        {msg && <p className="sk-p">{msg}</p>}
 
         {titles.length === 0 && (
           <div className="sk-callout"><p className="sk-p">You have not submitted a manuscript yet. Submitting is free.</p></div>
