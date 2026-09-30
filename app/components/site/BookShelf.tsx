@@ -9,15 +9,24 @@ export interface ShelfBook {
   genre: string | null
   buy_link: string | null
   published_at: string | null
+  isbn: string | null
+  page_count: number | null
+  trim_size: string | null
+  price_usd: number | null
+  price_gbp: number | null
+  format: string | null
+  subtitle: string | null
   authors: { name: string; slug: string } | null
 }
+
+export const bookSlug = (t: string) => t.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")
 
 export async function getShelfBooks(): Promise<ShelfBook[]> {
   try {
     const db = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
     const { data } = await db
       .from("books")
-      .select("id, title, description, cover_url, genre, buy_link, published_at, authors!books_author_id_fkey(name, slug)")
+      .select("id, title, description, cover_url, genre, buy_link, published_at, isbn, page_count, trim_size, price_usd, price_gbp, format, subtitle, authors!books_author_id_fkey(name, slug)")
       .order("published_at", { ascending: false })
     return ((data ?? []) as unknown) as ShelfBook[]
   } catch {
@@ -72,19 +81,18 @@ export default function BookShelf({ books, slots = 4 }: { books: ShelfBook[]; sl
       <div className="sk-shelf">
         {books.map((b) => (
           <article className="sk-bk" key={b.id}>
-            <div className="sk-bk-cover">
+            <Link href={`/books/${bookSlug(b.title)}`} className="sk-bk-cover" style={{ display: "block" }}>
               {b.cover_url ? <img src={b.cover_url} alt={`Cover of ${b.title}`} loading="lazy" /> : null}
-            </div>
+            </Link>
             <div>
               {b.genre && <span className="meta">{b.genre}</span>}
-              <h3>{b.title}</h3>
+              <h3><Link href={`/books/${bookSlug(b.title)}`} style={{ color: "inherit", textDecoration: "none" }}>{b.title}</Link></h3>
               {b.authors && <p className="by">by <Link href={`/authors/${b.authors.slug}`}>{b.authors.name}</Link></p>}
             </div>
             <p className="d">{blurb(b.description)}</p>
             {b.published_at && <span className="meta">{dateLabel(b.published_at)}</span>}
             <div style={{ display: "flex", gap: 18, flexWrap: "wrap" }}>
-              {b.buy_link && <a className="sk-bk-link" href={b.buy_link} target="_blank" rel="noopener noreferrer">Buy the book</a>}
-              {b.authors && <Link className="sk-bk-link" href={`/authors/${b.authors.slug}`}>About the author</Link>}
+              <Link className="sk-bk-link" href={`/books/${bookSlug(b.title)}`}>View book details</Link>
             </div>
           </article>
         ))}
