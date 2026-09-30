@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabase"
 import { useAdmin } from "./_context"
 import { adminCss } from "./_styles"
 import SalesImport from "./SalesImport"
+import { IsbnPanel, BookDetails } from "./BookTools"
 
 const display = Fraunces({ subsets: ["latin"], weight: ["300", "400", "600"] })
 const body = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] })
@@ -30,6 +31,7 @@ export default function MissionControl() {
   const [summary, setSummary] = useState("")
   const [nexts, setNexts] = useState<Record<string, string[]>>({})
   const [busy, setBusy] = useState(false)
+  const [detailsFor, setDetailsFor] = useState<string | null>(null)
 
   const load = useCallback(async () => {
     const { data, error } = await supabase.rpc("mission_control")
@@ -200,6 +202,9 @@ export default function MissionControl() {
                   <tr key={t.id}>
                     <td>{t.title}</td><td>{t.author}</td><td>{label(t.state)}</td><td>{t.days_in_state}</td>
                     <td>
+                      {["production", "cover_production", "interior_production", "proofing", "author_approval", "metadata", "distribution_setup", "prelaunch", "scheduled"].includes(t.state) && (
+                        <button className="a-btn-ghost" style={{ marginRight: 8 }} onClick={() => setDetailsFor(detailsFor === t.id ? null : t.id)}>Book details</button>
+                      )}
                       {["proofing", "author_approval"].includes(t.state) && (
                         <button className="a-btn-ghost" style={{ marginRight: 8 }} onClick={() => setProofLink(t.id)}>Proof link</button>
                       )}
@@ -213,6 +218,10 @@ export default function MissionControl() {
               </tbody>
             </table>
           </div>
+          {detailsFor && (() => {
+            const tt = (mc?.active_titles || []).find((x: any) => x.id === detailsFor)
+            return tt ? <BookDetails key={detailsFor} titleId={detailsFor} title={tt.title} onClose={() => setDetailsFor(null)} onSaved={load} /> : null
+          })()}
         </>
       )}
 
@@ -275,6 +284,7 @@ export default function MissionControl() {
               Submissions in 30 days: {sys.submissions_30d ?? 0}
             </div>
           </div>
+          <IsbnPanel />
           <div className="a-table-wrap">
             <table className="a-table">
               <thead><tr><th>Automated service</th><th>Today</th><th>Daily limit</th><th>This month</th><th>Status</th></tr></thead>
