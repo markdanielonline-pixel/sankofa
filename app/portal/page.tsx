@@ -82,6 +82,19 @@ export default function Portal() {
     if (j.url) window.location.href = j.url; else setMsg(j.error || "Could not start payment setup. Please try again.")
   }
 
+  const [proofNote, setProofNote] = useState<Record<string, string>>({})
+  async function respondProof(id: string, approve: boolean) {
+    setBusy(true); setMsg("")
+    const { data: d, error } = await supabase.rpc("author_respond_request", { p_request: id, p_approve: approve, p_note: proofNote[id] || "" })
+    setBusy(false)
+    if (error) { setMsg(error.message); return }
+    const res = (d as any)?.result
+    setMsg(res === "approved" ? "Thank you. Your proofs are approved and your book moves to the next step."
+      : res === "beyond_included_rounds" ? "We received your changes. Because they go past the two included rounds, we will contact you shortly about next steps."
+      : "Thank you. We received your changes and will send revised proofs.")
+    load()
+  }
+
   async function sign(titleId: string) {
     setBusy(true); setMsg("")
     const { error } = await supabase.rpc("author_sign_contract", { p_title: titleId, p_typed_name: name })
@@ -159,7 +172,24 @@ export default function Portal() {
               {reviewing && <p className="sk-note">We aim to respond by {new Date(t.respond_by).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}.</p>}
               {t.summary && <div className="sk-callout"><b>A note from the publisher</b><p style={{ margin: "6px 0 0" }}>{t.summary}</p></div>}
 
-              {(t.requests || []).map((r: any) => (
+              {(t.requests || []).filter((r: any) => r.kind === "proof_approval").map((r: any) => (
+                <div key={r.id} className="sk-callout" style={{ marginTop: 12 }}>
+                  <b>Your proofs are ready{r.round > 1 ? ` (revision ${r.round - 1})` : ""}</b>
+                  <p className="sk-p">Please review your cover and interior{r.due_at ? ` by ${new Date(r.due_at).toLocaleDateString("en-US", { month: "long", day: "numeric" })}` : ""}. Your agreement includes two rounds of revisions.</p>
+                  {t.proof_url ? <p className="sk-p"><a href={t.proof_url} target="_blank" rel="noopener noreferrer">Open your proofs</a></p> : <p className="sk-note">Your proof link is being attached. Check back shortly or reply to our email.</p>}
+                  <div className="sk-form">
+                    <div className="sk-field"><label>Changes you would like (leave blank if approving)</label>
+                      <textarea rows={3} value={proofNote[r.id] || ""} onChange={e => setProofNote({ ...proofNote, [r.id]: e.target.value })} />
+                    </div>
+                    <div className="sk-btnrow">
+                      <button className="sk-btn primary" disabled={busy} onClick={() => respondProof(r.id, true)}>Approve as it is</button>
+                      <button className="sk-btn ghost onlight" disabled={busy || !(proofNote[r.id] || "").trim()} onClick={() => respondProof(r.id, false)}>Send my changes</button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {(t.requests || []).filter((r: any) => r.kind !== "proof_approval").map((r: any) => (
                 <p key={r.id} className="sk-note"><b>Waiting on you:</b> {label(r.kind)}{r.due_at ? `, due ${new Date(r.due_at).toLocaleDateString()}` : ""}{r.status === "overdue" ? " (overdue)" : ""}</p>
               ))}
 

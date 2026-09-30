@@ -76,6 +76,12 @@ export default function MissionControl() {
     const { error } = await supabase.rpc("staff_advance", { p_title: id, p_to: to, p_note: "" })
     if (error) say(error.message); else { say("Moved to " + label(to)); load() }
   }
+  async function setProofLink(id: string) {
+    const url = window.prompt("Paste the https:// link to the cover and interior proofs (Drive, Dropbox, etc.). Set this BEFORE moving the book to author approval.")
+    if (!url) return
+    const { error } = await supabase.rpc("staff_set_proof_link", { p_title: id, p_url: url.trim() })
+    if (error) say(error.message); else say("Proof link saved")
+  }
   async function resolve(id: string) {
     const { error } = await supabase.rpc("resolve_exception", { p_id: id, p_note: "" })
     if (error) say(error.message); else { say("Marked resolved"); load() }
@@ -194,6 +200,9 @@ export default function MissionControl() {
                   <tr key={t.id}>
                     <td>{t.title}</td><td>{t.author}</td><td>{label(t.state)}</td><td>{t.days_in_state}</td>
                     <td>
+                      {["proofing", "author_approval"].includes(t.state) && (
+                        <button className="a-btn-ghost" style={{ marginRight: 8 }} onClick={() => setProofLink(t.id)}>Proof link</button>
+                      )}
                       <select className="a-select" defaultValue="" onChange={e => advance(t.id, e.target.value)}>
                         <option value="">Choose...</option>
                         {(nexts[t.state] || []).filter(s => !["accepted", "conditional_acceptance", "declined_revisable", "declined_final"].includes(s)).map(s => <option key={s} value={s}>{label(s)}</option>)}
