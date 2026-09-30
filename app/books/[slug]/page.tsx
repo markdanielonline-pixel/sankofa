@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { Section, Cta, JsonLd } from "../../components/site/Ui"
 import { getShelfBooks, bookSlug } from "../../components/site/BookShelf"
 import { SITE } from "../../../lib/content"
+import BuyPanel from "../../components/site/BuyPanel"
 
 export const revalidate = 300
 
@@ -92,12 +93,12 @@ export default async function BookPage({ params }: { params: Promise<{ slug: str
                   {b.price_gbp ? <span>&pound;{Number(b.price_gbp).toFixed(2)} GBP</span> : null}
                 </div>
               ) : null}
-              <p className="bk-fine">{b.format || "Paperback"}. Prices shown in US dollars and British pounds. Your bank or the retailer converts to your local currency at checkout.</p>
-              <div className="sk-btnrow">
-                {b.buy_link && <a className="sk-btn primary" href={b.buy_link} target="_blank" rel="noopener noreferrer">{upcoming ? "Order now" : "Buy the paperback"}</a>}
+              <p className="bk-fine">{b.format || "Paperback"}. Prices shown in US dollars and British pounds. You are charged in US dollars and your bank converts to your local currency.</p>
+              <div className="sk-btnrow" style={{ alignItems: "flex-start" }}>
+                {b.isbn && b.price_usd ? <BuyPanel isbn={b.isbn} unit={Number(b.price_usd)} /> : null}
                 {b.authors && <Link className="sk-btn ghost" href={`/authors/${b.authors.slug}`}>About the author</Link>}
               </div>
-              <p className="bk-fine" style={{ marginTop: 14 }}>Orders are fulfilled by our print partner through The Great British Bookshop. Printed on demand and shipped worldwide.</p>
+              <p className="bk-fine" style={{ marginTop: 14 }}>Printed on demand and shipped worldwide. Secure checkout by Stripe. Shipping is charged at cost and shown before you pay.</p>
             </div>
           </div>
         </div>
