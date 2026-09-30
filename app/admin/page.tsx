@@ -6,6 +6,7 @@ import Link from "next/link"
 import { supabase } from "@/lib/supabase"
 import { useAdmin } from "./_context"
 import { adminCss } from "./_styles"
+import SalesImport from "./SalesImport"
 
 const display = Fraunces({ subsets: ["latin"], weight: ["300", "400", "600"] })
 const body = Inter({ subsets: ["latin"], weight: ["300", "400", "500", "600"] })
@@ -247,8 +248,10 @@ export default function MissionControl() {
           </div>
           <div className="a-card" style={{ marginTop: 12, fontSize: 13 }}>
             Reserves held for returns: {money(m.reserves_held)}. Statements are issued automatically each quarter and payments are due within 45 days of quarter end.
-            Payments go out through Stripe Connect once your Sankofa Stripe account is linked.
+            Payments go out automatically through Stripe Connect to authors who have finished payment setup. Keep the Sankofa Stripe balance funded.
           </div>
+          <SalesImport />
+          {(m.payouts_count || 0) === 0 && <div className="a-empty" style={{ marginTop: 12 }}>No payments scheduled yet.</div>}
         </>
       )}
 
