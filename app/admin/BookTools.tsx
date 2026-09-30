@@ -9,11 +9,13 @@ export function IsbnPanel() {
   const [st, setSt] = useState<any>(null)
   const [text, setText] = useState("")
   const [msg, setMsg] = useState("")
+  const [fmt, setFmt] = useState("print")
+  async function onFile(f?: File) { if (f) setText(await f.text()) }
   const load = async () => { const { data } = await supabase.rpc("isbn_pool_status"); setSt(data) }
   useEffect(() => { load() }, [])
   async function add() {
     setMsg("")
-    const { data, error } = await supabase.rpc("owner_add_isbns", { p_text: text, p_format: "print" })
+    const { data, error } = await supabase.rpc("owner_add_isbns", { p_text: text, p_format: fmt })
     if (error) { setMsg(error.message); return }
     const d: any = data
     setMsg(`Added ${d.added}. Already had ${d.duplicates}. Invalid numbers skipped: ${d.invalid}.`)
@@ -24,6 +26,14 @@ export function IsbnPanel() {
       <b>ISBN supply</b>
       <div style={{ fontSize: 13, margin: "6px 0 10px", opacity: 0.8 }}>
         {st ? `${st.available} available, ${st.assigned} assigned.` : "Loading..."} Each new book gets the next one automatically. You will get an email when supply runs low.
+      </div>
+      <div style={{ display: "flex", gap: 10, flexWrap: "wrap", alignItems: "center", marginBottom: 8 }}>
+        <select value={fmt} onChange={e => setFmt(e.target.value)} style={{ padding: 8, borderRadius: 6 }}>
+          <option value="print">Paperback / hardcover ISBNs</option>
+          <option value="ebook">Ebook ISBNs</option>
+          <option value="audio">Audiobook ISBNs</option>
+        </select>
+        <input type="file" accept=".csv,.txt,text/plain,text/csv" onChange={e => onFile(e.target.files?.[0])} />
       </div>
       <textarea value={text} onChange={e => setText(e.target.value)} rows={3} style={{ width: "100%", padding: 8, borderRadius: 6 }} placeholder="Paste ISBN-13 numbers you bought, one per line or separated by commas" />
       <div style={{ marginTop: 8 }}><button className="a-btn-gold" onClick={add} disabled={!text.trim()}>Add ISBNs</button></div>
