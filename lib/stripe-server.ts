@@ -3,7 +3,7 @@ import { createClient } from "@supabase/supabase-js";
 const SB_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SB_ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.sankofapublishers.com";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://sankofapublishers.com";
 
 export function internalKey() {
   return process.env.CRON_SECRET || "";
