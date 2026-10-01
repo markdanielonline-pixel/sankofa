@@ -1,8 +1,9 @@
 "use client"
 
-import { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import Link from "next/link"
 import { supabase } from "../../lib/supabase"
+import AuthorCopies from "./AuthorCopies"
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const STEPS = ["Review", "Decision", "Agreement", "Production", "Launch", "Published"]
@@ -148,6 +149,7 @@ export default function Portal() {
           </div>
         )}
         {msg && <p className="sk-p">{msg}</p>}
+        <AuthorCopies />
 
         {titles.length === 0 && (
           <div className="sk-callout"><p className="sk-p">You have not submitted a manuscript yet. Submitting is free.</p></div>
@@ -219,10 +221,37 @@ export default function Portal() {
               <thead><tr><th style={{ textAlign: "left" }}>Quarter</th><th>Units</th><th>Net receipts</th><th>Your 60%</th><th>Balance</th><th style={{ textAlign: "left" }}>Payment</th></tr></thead>
               <tbody>
                 {statements.map(s => (
-                  <tr key={s.id}>
+                  <React.Fragment key={s.id}>
+                  <tr>
                     <td>{s.period}</td><td>{s.units}</td><td>{money(s.net_receipts)}</td><td>{money(s.earnings)}</td><td>{money(s.closing_balance)}</td>
                     <td>{s.payout_amount > 0 ? `${money(s.payout_amount)} by ${s.payout_due_by}` : "Rolls forward (under $50)"}</td>
                   </tr>
+                  <tr><td colSpan={6} style={{ textAlign: "left", fontSize: 14, paddingBottom: 14 }}>
+                    <details>
+                      <summary>How this was calculated</summary>
+                      <div style={{ marginTop: 8, lineHeight: 1.7 }}>
+                        <div>Gross sales: {money(s.gross_receipts)}</div>
+                        <div>Less printing, retailer fees, card fees and tax collected: -{money(s.deductions)}</div>
+                        <div><b>Net receipts: {money(s.net_receipts)}</b></div>
+                        <div>Your share (60%): {money(s.earnings)}</div>
+                        {Number(s.opening_balance) > 0 && <div>Brought forward from last statement: {money(s.opening_balance)}</div>}
+                        {Number(s.reserves_held) > 0 && <div>Held back for possible returns: -{money(s.reserves_held)}</div>}
+                        {Number(s.reserves_released) > 0 && <div>Returns reserve released: {money(s.reserves_released)}</div>}
+                        {Number(s.adjustments) !== 0 && <div>Adjustments: {money(s.adjustments)}</div>}
+                        {Number(s.withholding) > 0 && <div>Tax withheld: -{money(s.withholding)}</div>}
+                        <div><b>Balance: {money(s.closing_balance)}</b></div>
+                        {(s.lines || []).length > 0 && (
+                          <table style={{ marginTop: 10, width: "100%", fontSize: 13 }}>
+                            <thead><tr><th style={{ textAlign: "left" }}>Channel</th><th>Units</th><th>Sales</th><th>Printing</th><th>Retailer fee</th><th>Card fee</th><th>Tax</th><th>Your share</th></tr></thead>
+                            <tbody>{s.lines.map((l: any, i: number) => (
+                              <tr key={i}><td style={{ textAlign: "left" }}>{label(String(l.channel))}</td><td>{l.units}</td><td>{money(l.gross)}</td><td>{money(l.printing)}</td><td>{money(l.commission)}</td><td>{money(l.processing)}</td><td>{money(l.taxes)}</td><td>{String(l.channel) === "author_copy" ? "No royalty" : money(l.earnings)}</td></tr>
+                            ))}</tbody>
+                          </table>
+                        )}
+                      </div>
+                    </details>
+                  </td></tr>
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>

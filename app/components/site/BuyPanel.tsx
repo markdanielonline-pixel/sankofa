@@ -2,7 +2,7 @@
 
 import React, { useState } from "react"
 
-const COUNTRIES: [string, string][] = [
+export const COUNTRIES: [string, string][] = [
   ["US", "United States"], ["CA", "Canada"], ["GB", "United Kingdom"], ["AU", "Australia"],
   ["TT", "Trinidad and Tobago"], ["JM", "Jamaica"], ["BB", "Barbados"], ["GY", "Guyana"], ["BS", "Bahamas"],
   ["GD", "Grenada"], ["LC", "Saint Lucia"], ["VC", "Saint Vincent and the Grenadines"], ["AG", "Antigua and Barbuda"],

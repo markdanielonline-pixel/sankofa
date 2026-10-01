@@ -1,4 +1,4 @@
-"use client"
+﻿"use client"
 
 import React, { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
@@ -87,6 +87,7 @@ export function BookDetails({ titleId, title, onClose, onSaved }: { titleId: str
         <input style={inp} placeholder="Trim size, e.g. 5.5 x 8.5" value={f.trim_size || ""} onChange={set("trim_size")} />
         <input style={inp} placeholder="Page count" inputMode="numeric" value={f.page_count ?? ""} onChange={set("page_count")} />
         <input style={inp} placeholder="Retail price, e.g. 16.99" inputMode="decimal" value={f.retail_price ?? ""} onChange={set("retail_price")} />
+        <PriceCheck titleId={titleId} price={f.retail_price} />
         <textarea style={inp} rows={4} placeholder="Book description for retailers" value={f.retailer_description || ""} onChange={set("retailer_description")} />
         <input style={inp} placeholder="Keywords, separated by commas" value={f.keywords || ""} onChange={set("keywords")} />
         <input style={inp} placeholder="BISAC codes, separated by commas (e.g. REL012000)" value={f.bisac_codes || ""} onChange={set("bisac_codes")} />
@@ -109,6 +110,27 @@ export function BookDetails({ titleId, title, onClose, onSaved }: { titleId: str
         <button className="a-btn-ghost" onClick={onClose}>Close</button>
       </div>
       {msg && <p style={{ fontSize: 13, marginTop: 8 }}>{msg}</p>}
+    </div>
+  )
+}
+
+function PriceCheck({ titleId, price }: { titleId: string; price: any }) {
+  const [pc, setPc] = useState<any>(null)
+  useEffect(() => {
+    const p = parseFloat(String(price || ""))
+    const h = setTimeout(() => {
+      supabase.rpc("price_check", { p_title: titleId, p_price: isNaN(p) ? null : p }).then(({ data }) => setPc(data || null))
+    }, 400)
+    return () => clearTimeout(h)
+  }, [titleId, price])
+  if (!pc) return null
+  const m = (n: any) => (n == null ? "-" : "$" + Number(n).toFixed(2))
+  return (
+    <div style={{ gridColumn: "1 / -1", fontSize: 13, padding: 10, borderRadius: 8, background: pc.ok ? "#eef7ee" : "#fdeeee" }}>
+      <b>{pc.ok ? "Price protects our margin" : "Price check failed"}</b>
+      <div>Print cost {m(pc.print_cost)}{pc.print_cost_is_estimate ? " (estimate)" : ""}. Store sale nets {m(pc.store_net)}. Retailer sale: Sankofa keeps {m(pc.wholesale_sankofa_share)}. Author copy sells at {m(pc.author_copy_price)}, Sankofa keeps {m(pc.author_copy_margin)}.</div>
+      <div>Lowest safe price {m(pc.min_list_price)}. Recommended {m(pc.recommended_list_price)}.</div>
+      {(pc.issues || []).map((i: string, k: number) => <div key={k}>• {i}</div>)}
     </div>
   )
 }

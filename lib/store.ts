@@ -33,6 +33,8 @@ export async function fulfillSession(s: any) {
     partner: m.partner,
     serv_id: m.serv_id,
     serv_name: m.serv_name,
+    kind: m.order_kind === "author_copy" ? "author_copy" : "retail",
+    author_id: m.author_id || null,
   };
   const r = await storeFn({ action: "fulfill", order }, true);
   return r.json;
