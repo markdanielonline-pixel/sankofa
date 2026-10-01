@@ -128,7 +128,7 @@ function PriceCheck({ titleId, price }: { titleId: string; price: any }) {
   const cell: React.CSSProperties = { padding: "3px 6px", textAlign: "right" }
   return (
     <div style={{ gridColumn: "1 / -1", fontSize: 13, padding: 10, borderRadius: 8, background: pc.ok ? "#eef7ee" : "#fdeeee" }}>
-      <b>{pc.ok ? "Margins protected" : "Margin warning"}</b> &nbsp; Print cost {m(pc.print_cost)}{pc.print_cost_is_estimate ? " (estimate until BookVault cost is saved)" : ""}
+      <b>{pc.ok ? "Margins protected" : "Margin warning"}</b> &nbsp; Real print cost {m(pc.print_cost)}. Author sees {m(pc.author_sees_print)}{pc.print_cost_is_estimate ? " (estimate until BookVault cost is saved)" : ""}
       <table style={{ width: "100%", marginTop: 6, borderCollapse: "collapse" }}>
         <thead><tr><th style={{ ...cell, textAlign: "left" }}>Sale type</th><th style={cell}>Price</th><th style={cell}>Print</th><th style={cell}>Fees</th><th style={cell}>Author</th><th style={cell}>Sankofa</th><th style={cell}>Our %</th></tr></thead>
         <tbody>{(pc.channels || []).map((c: any) => (
