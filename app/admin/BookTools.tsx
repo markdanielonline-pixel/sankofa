@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import React, { useEffect, useState } from "react"
 import { supabase } from "@/lib/supabase"
@@ -125,11 +125,18 @@ function PriceCheck({ titleId, price }: { titleId: string; price: any }) {
   }, [titleId, price])
   if (!pc) return null
   const m = (n: any) => (n == null ? "-" : "$" + Number(n).toFixed(2))
+  const cell: React.CSSProperties = { padding: "3px 6px", textAlign: "right" }
   return (
     <div style={{ gridColumn: "1 / -1", fontSize: 13, padding: 10, borderRadius: 8, background: pc.ok ? "#eef7ee" : "#fdeeee" }}>
-      <b>{pc.ok ? "Price protects our margin" : "Price check failed"}</b>
-      <div>Print cost {m(pc.print_cost)}{pc.print_cost_is_estimate ? " (estimate)" : ""}. Store sale nets {m(pc.store_net)}. Retailer sale: Sankofa keeps {m(pc.wholesale_sankofa_share)}. Author copy sells at {m(pc.author_copy_price)}, Sankofa keeps {m(pc.author_copy_margin)}.</div>
-      <div>Lowest safe price {m(pc.min_list_price)}. Recommended {m(pc.recommended_list_price)}.</div>
+      <b>{pc.ok ? "Margins protected" : "Margin warning"}</b> &nbsp; Print cost {m(pc.print_cost)}{pc.print_cost_is_estimate ? " (estimate until BookVault cost is saved)" : ""}
+      <table style={{ width: "100%", marginTop: 6, borderCollapse: "collapse" }}>
+        <thead><tr><th style={{ ...cell, textAlign: "left" }}>Sale type</th><th style={cell}>Price</th><th style={cell}>Print</th><th style={cell}>Fees</th><th style={cell}>Author</th><th style={cell}>Sankofa</th><th style={cell}>Our %</th></tr></thead>
+        <tbody>{(pc.channels || []).map((c: any) => (
+          <tr key={c.key} style={{ borderTop: "1px solid #0002" }}>
+            <td style={{ ...cell, textAlign: "left" }}>{c.label}</td><td style={cell}>{m(c.price)}</td><td style={cell}>{m(c.print_cost)}</td><td style={cell}>{m(c.fees)}</td><td style={cell}>{m(c.author_gets)}</td><td style={cell}><b>{m(c.sankofa_gets)}</b></td><td style={cell}>{c.sankofa_pct}%</td>
+          </tr>))}</tbody>
+      </table>
+      <div style={{ marginTop: 6 }}>Lowest safe retail price {m(pc.min_list_price)}. Recommended {m(pc.recommended_list_price)}. Shipping is paid by the buyer and not shown.</div>
       {(pc.issues || []).map((i: string, k: number) => <div key={k}>• {i}</div>)}
     </div>
   )
