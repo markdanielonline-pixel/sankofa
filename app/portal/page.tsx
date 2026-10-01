@@ -231,7 +231,7 @@ export default function Portal() {
                       <summary>How this was calculated</summary>
                       <div style={{ marginTop: 8, lineHeight: 1.7 }}>
                         <div>Gross sales: {money(s.gross_receipts)}</div>
-                        <div>Less printing, retailer fees, card fees and tax collected: -{money(s.deductions)}</div>
+                        <div>Less printing and fulfilment (Sankofa standard rate), retailer fees, card fees and tax collected: -{money(s.deductions)}</div>
                         <div><b>Net receipts: {money(s.net_receipts)}</b></div>
                         <div>Your share (60%): {money(s.earnings)}</div>
                         {Number(s.opening_balance) > 0 && <div>Brought forward from last statement: {money(s.opening_balance)}</div>}
